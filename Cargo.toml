@@ -1,0 +1,34 @@
+[package]
+name = "my_ink_contract"
+version = "0.1.0"
+authors = ["[your_name] <[your_email]>"]
+edition = "2021"
+
+[dependencies]
+ink = { version = "6.0.0-alpha", default-features = false, features = ["unstable-hostfn"] }
+
+
+# Note: We **need** to specify the `ink-as-dependency` feature.
+#
+# If we don't we will end up with linking errors!
+governance = { path = "other_contracts/governance", default-features = false, features = ["ink-as-dependency"] }
+my_erc20 = { path = "other_contracts/my_erc20", default-features = false, features = ["ink-as-dependency"] }
+pallet-revive-uapi = { git = "https://github.com/paritytech/polkadot-sdk", rev = "f8c90b2a01ec77579bccd21ae17bd6ff2eeffd6a", default-features = false, features = ["unstable-hostfn"] }
+
+[dev-dependencies]
+env_logger = { version = "0.11.3" }
+ink_e2e = "6.0.0-alpha"
+serde_json = "1.0.114"
+
+[lib]
+path = "lib.rs"
+
+[features]
+default = ["std"]
+std = [
+	"governance/std",
+	"ink/std",
+	"my_erc20/std",
+]
+ink-as-dependency = []
+e2e-tests = []

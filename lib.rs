@@ -1,0 +1,429 @@
+#![cfg_attr(not(feature = "std"), no_std, no_main)]
+use ink::{ prelude::vec::Vec, storage::Mapping, H160};
+
+#[ink::contract]
+mod dao {
+    use super::*;
+    use ink::codegen::TraitCallBuilder;
+    use my_erc20::MyErc20Ref;
+    use governance::{GovernanceRef, ProposalType};
+
+    pub const MINUTES: BlockNumber = 20;
+    pub const HOURS: BlockNumber = MINUTES * 60;
+    pub const DAYS: BlockNumber = HOURS * 24;
+
+    #[derive(Debug, Clone)]
+    #[ink::scale_derive(Encode, Decode, TypeInfo)]
+    #[cfg_attr(feature = "std", derive(ink::storage::traits::StorageLayout))]
+    pub struct User {
+        name: Vec<u8>,
+        subscription: Subscription,
+        mentor: bool,
+        council: bool,
+        institutional: bool,
+        school: bool,
+    }
+
+
+    impl User {
+        pub fn new(
+            name: Vec<u8>,
+            subscription: Subscription,
+            institutional: bool,
+            school: bool,
+        ) -> Self {
+            let amount = subscription_amount(subscription.subscription_type.clone());
+            let start = ink::env::block_number::<Environment>();
+            let end = start.saturating_add(DAYS * 30); // Example: 30 days subscription
+            let active = true; // Assuming the subscription is active upon creation
+            let subscription = Subscription {
+                amount,
+                start,
+                end,
+                active,
+                subscription_type: subscription.subscription_type,
+            };
+
+            Self {
+                name,
+                subscription,
+                mentor: false,  // Default value for mentor
+                council: false, // Default value for council
+                institutional,
+                school,
+            }
+        }
+    }
+
+    #[derive(Debug, Clone)]
+    #[ink::scale_derive(Encode, Decode, TypeInfo)]
+    #[cfg_attr(feature = "std", derive(ink::storage::traits::StorageLayout))]
+    pub struct Subscription {
+        amount: Option<Balance>,
+        start: BlockNumber,
+        end: BlockNumber,
+        active: bool,
+        subscription_type: SubscriptionType,
+    }
+
+    #[derive(Debug, Clone, PartialEq)]
+    #[ink::scale_derive(Encode, Decode, TypeInfo)]
+    #[cfg_attr(feature = "std", derive(ink::storage::traits::StorageLayout))]
+    pub enum SubscriptionType {
+        Free,
+        Basic,
+        Premium,
+        Other,
+    }
+
+    pub enum Roles {
+        Mentor,
+        Council,
+    }
+
+    /// Defines an event that is emitted
+    /// every time a subscription is created.
+    #[derive(Debug)]
+    #[ink(event)]
+    pub struct SubscriptionCreated {
+        pub who: Option<H160>,
+        pub when: Option<BlockNumber>,
+    }
+    /// Defines the storage of your contract.
+    /// Add new fields to the below struct in order
+    /// to add new static storage fields to your contract.
+    #[ink(storage)]
+    pub struct Dao {
+        members: Mapping<H160, User>,
+        erc20: MyErc20Ref,
+        governance: GovernanceRef,
+    }
+
+    impl Dao {
+        /// Constructor that initializes the `bool` value to the given `init_value`.
+        #[ink(constructor)]
+        pub fn new(
+            supply: ink::U256,
+        ) -> Self {
+            
+            let erc20code_hash = "0x59fbcc0d3734067b5a064b72ad9c8f163a7c4d830c98edb4949053b510a0e97a"
+                .parse()
+                .expect("Invalid ERC20 code hash");
+            let governance_code_hash = "0xd64ffc76b5f4313af403e9033d31fd2de77358b17b3363ece8378ab9c336bfa6"
+                .parse()
+                .expect("Invalid Governance code hash");
+            let erc20_contract = MyErc20Ref::new(supply)
+                .code_hash(erc20code_hash)
+                .endowment(0.into())
+                .salt_bytes(Some([1u8; 32]))
+                .instantiate();
+
+            let governance_contract = GovernanceRef::new(50)
+                .code_hash(governance_code_hash) // Replace with actual code hash
+                .endowment(0.into())
+                .salt_bytes(Some([2u8; 32]))
+                .instantiate();
+            Self {
+                members: Mapping::default(),
+                erc20: erc20_contract,
+                governance: governance_contract,
+            }
+        }
+
+        /// A message that can be called on instantiated contracts.
+        /// This one flips the value of the stored `bool` from `true`
+        /// to `false` and vice versa.
+        #[ink(message)]
+        pub fn new_subscription(
+            &mut self,
+            name: Vec<u8>,
+            subscription: Subscription,
+            institutional: bool,
+            school: bool,
+        ) -> Result<(), Error> {
+            let caller = self.env().caller();
+
+            let dao_account = self.env().address();
+            let call_builder = self.erc20.call_mut();
+
+            let member = self.members.get(caller);
+            if !member.is_none() {
+                return Err(Error::CanUpgradeOnly);
+            }
+            let user = User::new(name, subscription, institutional, school);
+
+            self.members.insert(caller, &user);
+            match user.subscription.subscription_type {
+                SubscriptionType::Free => {}
+                SubscriptionType::Basic | SubscriptionType::Premium | SubscriptionType::Other => {
+                    let amount = user.subscription.amount.unwrap_or(0);
+                    // Transfer the amount from the caller to the DAO account
+                    let _transfer_result = call_builder
+                        .transfer(dao_account, amount.into())
+                        .ref_time_limit(1000000)
+                    .proof_size_limit(1000000)
+                    .storage_deposit_limit(1000000.into())
+                        .invoke();
+                }
+            }
+            self.env().emit_event(SubscriptionCreated {
+                who: Some(caller),
+                when: Some(self.env().block_number()),
+            });
+            Ok(())
+        }
+
+        pub fn update_subscription(
+        &mut self,
+        request: SubscriptionType,
+    ) -> Result<(), Error> {
+        let caller = self.env().caller();
+        let mut member = self.members.get(caller).ok_or(Error::UserNotFound)?;
+        match member.subscription.subscription_type {
+            SubscriptionType::Free => {
+                // Update to basic
+                member.subscription.subscription_type = SubscriptionType::Basic;
+                let amount = subscription_amount(SubscriptionType::Basic).unwrap_or(0); // Example amount for Basic
+                member.subscription.amount = Some(amount.into());
+                member.subscription.start = self.env().block_number();
+                member.subscription.end = member.subscription.start.saturating_add(DAYS * 30); // Example: 30 days subscription
+                self.members.insert(caller, &member);
+                // Transfer the amount from the caller to the DAO account
+                let dao_account = self.env().address();
+                let call_builder = self.erc20.call_mut();
+
+                let _transfer_result = call_builder
+                    .transfer(dao_account, amount.into())
+                    .ref_time_limit(1000000)
+                    .proof_size_limit(1000000)
+                    .storage_deposit_limit(1000000.into())
+                    .invoke();
+            }
+            SubscriptionType::Basic => {
+                let amount = subscription_amount(request.clone()).unwrap_or(0); // Example amount for Basic
+                match request{
+                    SubscriptionType::Premium => {
+                        member.subscription.subscription_type = request;                    
+                        member.subscription.amount = Some(amount.into());
+                        member.subscription.start = self.env().block_number();
+                        member.subscription.end = member.subscription.start.saturating_add(DAYS * 30);
+                    }
+                    SubscriptionType::Other => {
+                        member.subscription.subscription_type = request;                    
+                        member.subscription.amount = Some(amount.into());
+                        member.subscription.start = self.env().block_number();
+                        member.subscription.end = member.subscription.start.saturating_add(DAYS * 30);
+                    }
+                    _ => return Err(Error::InvalidSubscription),
+                        
+                }
+                self.members.insert(caller, &member);
+                // Transfer the amount from the caller to the DAO account
+                let dao_account = self.env().address();
+                let call_builder = self.erc20.call_mut();
+
+                let _transfer_result = call_builder
+                    .transfer(dao_account, amount.into())
+                    .ref_time_limit(1000000)
+                    .proof_size_limit(1000000)
+                    .storage_deposit_limit(1000000.into())
+                    .invoke();
+            }, 
+            _ => {}, // Submit to referendum
+            
+        }
+        Ok(())
+    }
+
+    pub fn request_spending(
+        &mut self,
+        beneficiary: H160,
+        amount: Balance,
+        description: Vec<u8>,
+    ) -> Result<(), Error> {
+        let caller = self.env().caller();
+        let member = self.members.get(caller).ok_or(Error::UserNotFound)?;
+        if member.council != true && member.mentor != true{
+            return Err(Error::NotAnAuthorisedUser);
+        }
+        // Create a proposal for spending request
+        let dao_account = self.env().address();
+                let call_builder = self.governance.call_mut();
+        let _proposal = call_builder
+            .create_proposal(
+                description,
+                ProposalType::Spending,
+                Some(beneficiary),
+                amount.into(), // Convert Balance to u128
+            );
+
+        Ok(())
+    }
+
+       pub fn request_role(&mut self, 
+            role: Roles, 
+            description: Vec<u8>,
+        ) -> Result<(), Error> {
+        // This function is a placeholder for requesting a role.
+        let caller = self.env().caller();
+        let member = self.members.get(caller).ok_or(Error::UserNotFound)?;
+        if member.subscription.subscription_type != SubscriptionType::Premium {
+            return Err(Error::NotPremiumUser);
+        }
+        match role {
+            Roles::Mentor => {
+                //create a proposal for requesting Mentor role
+                let call_builder = self.governance.call_mut();
+                let _proposal = call_builder
+                    .create_proposal(
+                        description,
+                        ProposalType::NewMentor,
+                        Some(caller),
+                        0, // Placeholder for proposal parameters
+                    )
+                    .ref_time_limit(1000000)
+                    .proof_size_limit(1000000)
+                    .storage_deposit_limit(1000000.into())
+                    .invoke();
+            }
+            Roles::Council => {
+                //create a proposal for requesting Mentor role
+                let call_builder = self.governance.call_mut();
+                let _proposal = call_builder
+                    .create_proposal(
+                        description,
+                        ProposalType::NewMentor,
+                        Some(caller),
+                        0, // Placeholder for proposal parameters
+                    )
+                    .ref_time_limit(1000000)
+                    .proof_size_limit(1000000)
+                    .storage_deposit_limit(1000000.into())
+                    .invoke();
+            }
+        }
+        Ok(())
+    }
+
+    #[ink(message)]
+    pub fn  execute_proposal(
+        &mut self,
+        proposal_id: u32,
+    ) -> Result<(), Error> {
+        let caller = self.env().caller();
+        let dao_account = self.env().address();
+        let member = self.members.get(caller).ok_or(Error::UserNotFound)?;
+        if member.council != true && member.mentor != true{
+            return Err(Error::NotAnAuthorisedUser);
+        }
+        // Execute the proposal
+        let call_builder = self.governance.call_mut();
+        let proposal = call_builder
+            .get_proposal(proposal_id)
+            .ref_time_limit(1000000)
+                    .proof_size_limit(1000000)
+                    .storage_deposit_limit(1000000.into())
+            .invoke().map_err(|_| Error::ProposalNotFound)?;
+
+        let _=call_builder
+            .update_proposal_status(proposal_id, false)
+            .ref_time_limit(1000000)
+                    .proof_size_limit(1000000)
+                    .storage_deposit_limit(1000000.into())
+            .invoke();
+        let proposal_type = proposal.basic_infos.proposal_type;
+        let owner_id = proposal.owner;
+
+        match proposal_type {
+            ProposalType::Spending => {
+                let transaction = proposal.transaction.clone().ok_or(Error::InvalidSubscription)?;
+                let beneficiary = transaction.beneficiary;
+                let amount = transaction.amount;
+                // Transfer the amount to the beneficiary
+                let call_builder = self.erc20.call_mut();
+                let _transfer_result = call_builder
+                    .transfer_from(dao_account, beneficiary, amount.into())
+                    .ref_time_limit(1000000)
+                    .proof_size_limit(1000000)
+                    .storage_deposit_limit(1000000.into())
+                    .invoke();
+                     Ok(())
+            }
+            ProposalType::NewCouncilvoter => {                
+                // Change user's role to council
+                let mut owner = self.members.get(owner_id).ok_or(Error::UserNotFound)?;
+                owner.council = true;
+                self.members.insert(owner_id, &owner);
+                 Ok(())
+               
+            }
+            ProposalType::NewMentor => {
+                let mut owner = self.members.get(owner_id).ok_or(Error::UserNotFound)?;
+                owner.mentor = true;
+                self.members.insert(owner_id, &owner);
+                 Ok(())
+            }
+            
+        }
+    }
+
+    }
+
+ 
+    
+
+    #[derive(Debug, PartialEq, Eq)]
+    #[ink::scale_derive(Encode, Decode, TypeInfo)]
+    pub enum Error {
+        SubscriptionAlreadyExists,
+        UserNotFound,
+        InsufficientFunds,
+        CanUpgradeOnly,
+        InvalidSubscriptionAmount,
+        InvalidSubscription,
+        NotPremiumUser,
+        NotAnAuthorisedUser,
+        ProposalNotFound,
+    }
+
+    pub fn subscription_amount(subscription: SubscriptionType) -> Option<Balance> {
+        match subscription {
+            SubscriptionType::Free => None,
+            SubscriptionType::Basic => Some(1000), // Example amount for Basic
+            SubscriptionType::Premium => Some(5000), // Example amount for Premium
+            SubscriptionType::Other => Some(10000), // Example amount for Other
+        }
+    }
+    /// Unit tests in Rust are normally defined within such a `#[cfg(test)]`
+    /// module and test functions are marked with a `#[test]` attribute.
+    /// The below code is technically just normal Rust code.
+    #[cfg(test)]
+    mod tests {
+        /// Imports all the definitions from the outer scope so we can use them here.
+        use super::*;
+
+        #[ink::test]
+        fn test_new_subscription() {
+            let mut dao = Dao::new();
+            let subscription = Subscription {
+                amount: Some(1000),
+                start: 0,
+                end: 30,
+                active: true,
+                subscription_type: SubscriptionType::Basic,
+            };
+            dao.new_subscription(b"test_user".to_vec(), subscription, false, false);
+            let emitted_events = ink::env::test::recorded_events().collect::<Vec<_>>();
+            assert_eq!(1, emitted_events.len());
+        }
+
+
+        #[ink::test]
+        fn test_update_subscription() {
+            //fund caller wallet
+            let mut dao = Dao::new();
+            let caller = ink::env::test::default_accounts().alice;
+
+        }
+    }
+}
