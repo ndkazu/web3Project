@@ -130,9 +130,7 @@ mod dao {
             }
         }
 
-        /// A message that can be called on instantiated contracts.
-        /// This one flips the value of the stored `bool` from `true`
-        /// to `false` and vice versa.
+        /// This message creates a new user's Subscription
         #[ink(message)]
         pub fn new_subscription(
             &mut self,
@@ -173,6 +171,8 @@ mod dao {
             Ok(())
         }
 
+        /// This message updates a user's Subscription
+        #[ink(message)]
         pub fn update_subscription(
         &mut self,
         request: SubscriptionType,
@@ -235,6 +235,8 @@ mod dao {
         Ok(())
     }
 
+    /// Request a spending proposal
+    #[ink(message)]
     pub fn request_spending(
         &mut self,
         beneficiary: H160,
@@ -259,7 +261,8 @@ mod dao {
 
         Ok(())
     }
-
+        /// Request a particular role
+        #[ink(message)]
        pub fn request_role(&mut self, 
             role: Roles, 
             description: Vec<u8>,
@@ -305,6 +308,7 @@ mod dao {
         Ok(())
     }
 
+    /// Execute a proposal
     #[ink(message)]
     pub fn  execute_proposal(
         &mut self,
