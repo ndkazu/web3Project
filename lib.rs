@@ -76,6 +76,9 @@ mod dao {
         Other,
     }
 
+    #[derive(Debug, Clone, PartialEq)]
+    #[ink::scale_derive(Encode, Decode, TypeInfo)]
+    #[cfg_attr(feature = "std", derive(ink::storage::traits::StorageLayout))]
     pub enum Roles {
         Mentor,
         Council,
