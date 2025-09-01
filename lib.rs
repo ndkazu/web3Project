@@ -106,11 +106,11 @@ mod dao {
         #[ink(constructor)]
         pub fn new(supply: ink::U256) -> Self {
             let erc20code_hash =
-                "0x9eb4d6b44a37449c396d335be8b31b7d64c9d8c93dadbad35325db40b0d23b5d"
+                "0x068e8167fb50cf8f50de12a71b54d3e31b26064f1f50b2088800cdeffbceded9"
                     .parse()
                     .expect("Invalid ERC20 code hash");
             let governance_code_hash =
-                "0x22d01ab811ce50dca28edd3fccda9e079c0536df5d273790e84c43356493cf52"
+                "0x64c58edb6ad7772d4c8bbbdab61155434d10a73c801d96079a242cc1a4fe6f22"
                     .parse()
                     .expect("Invalid Governance code hash");
             let erc20_contract = MyErc20Ref::new(supply)
