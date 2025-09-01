@@ -7,7 +7,7 @@ pub use self::governance::{
 
 #[ink::contract]
 mod governance {
-use ink::{ prelude::vec::Vec, storage::Mapping, H160};
+use ink::{ prelude::vec::Vec, storage::Mapping};
 
     #[derive(Debug, Clone, PartialEq)]
 	#[ink::scale_derive(Encode, Decode, TypeInfo)]
@@ -43,7 +43,7 @@ use ink::{ prelude::vec::Vec, storage::Mapping, H160};
 	#[cfg_attr(feature = "std", derive(ink::storage::traits::StorageLayout))]
 	pub struct Transaction {
 		// The recipient of the proposal
-		pub beneficiary: H160,
+		pub beneficiary: Address,
 		// Amount of tokens to be awarded to the beneficiary
 		pub amount: Balance,
 	}	
@@ -53,7 +53,7 @@ use ink::{ prelude::vec::Vec, storage::Mapping, H160};
 	#[cfg_attr(feature = "std", derive(ink::storage::traits::StorageLayout))]
 	pub struct Spending {
 		// The recipient of the proposal
-		pub beneficiary: H160,
+		pub beneficiary: Address,
 		// Amount of tokens to be awarded to the beneficiary
 		pub amount: Balance,
 	}	
@@ -79,7 +79,7 @@ use ink::{ prelude::vec::Vec, storage::Mapping, H160};
 	#[derive(Debug)]
 	#[ink(event)]
 	pub struct Vote {
-		pub who: Option<H160>,
+		pub who: Option<Address>,
 		pub when: Option<BlockNumber>,
 	}
 
@@ -98,7 +98,7 @@ use ink::{ prelude::vec::Vec, storage::Mapping, H160};
 		// Information relative to proposal execution if approved
 		pub transaction: Option<Transaction>,
         // owner of the proposal
-        pub owner: H160,
+        pub owner: Address,
 	}
 
     impl VoteInfos {
@@ -147,7 +147,7 @@ use ink::{ prelude::vec::Vec, storage::Mapping, H160};
 		proposals: Mapping<u32, Proposal>,
 
         // Mapping of Address to Voter structs, representing DAO votership.
-		voters: Mapping<H160, Voter>,
+		voters: Mapping<Address, Voter>,
 
 		// Duration of the voting period
 		voting_period: BlockNumber,
@@ -177,7 +177,7 @@ use ink::{ prelude::vec::Vec, storage::Mapping, H160};
             &mut self,
             description: Vec<u8>,
             proposal_type: ProposalType,
-            beneficiary: Option<H160>,
+            beneficiary: Option<Address>,
             amount: Balance,
         ) -> u32 {
             let proposal_id = self.proposal_count;

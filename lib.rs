@@ -1,5 +1,4 @@
 #![cfg_attr(not(feature = "std"), no_std, no_main)]
-use ink::{prelude::vec::Vec, storage::Mapping, H160};
 
 #[ink::contract]
 mod dao {
@@ -7,6 +6,7 @@ mod dao {
     use governance::{GovernanceRef, ProposalType};
     use ink::codegen::TraitCallBuilder;
     use my_erc20::MyErc20Ref;
+    use ink::{prelude::vec::Vec, storage::Mapping};
 
     pub const MINUTES: BlockNumber = 20;
     pub const HOURS: BlockNumber = MINUTES * 60;
@@ -88,7 +88,7 @@ mod dao {
     #[derive(Debug)]
     #[ink(event)]
     pub struct SubscriptionCreated {
-        pub who: Option<H160>,
+        pub who: Option<Address>,
         pub when: Option<BlockNumber>,
     }
     /// Defines the storage of your contract.
@@ -96,7 +96,7 @@ mod dao {
     /// to add new static storage fields to your contract.
     #[ink(storage)]
     pub struct Dao {
-        members: Mapping<H160, User>,
+        members: Mapping<Address, User>,
         erc20: MyErc20Ref,
         governance: GovernanceRef,
     }
@@ -106,11 +106,11 @@ mod dao {
         #[ink(constructor)]
         pub fn new(supply: ink::U256) -> Self {
             let erc20code_hash =
-                "0x195ad34277d67fd8d1061e0b40a9c4d7f5fccf30e0514b4c268fda0f2984ea4c"
+                "0x9eb4d6b44a37449c396d335be8b31b7d64c9d8c93dadbad35325db40b0d23b5d"
                     .parse()
                     .expect("Invalid ERC20 code hash");
             let governance_code_hash =
-                "0xaf71e5068d412780cdf3194d6520959c6b4b2d06794db96e377280fcb5dbe602"
+                "0xbc1d9c85110c29aa56d88131627c17f92456cf8fcf7b439f3854a359d49c122a"
                     .parse()
                     .expect("Invalid Governance code hash");
             let erc20_contract = MyErc20Ref::new(supply)
@@ -237,7 +237,7 @@ mod dao {
         #[ink(message)]
         pub fn request_spending(
             &mut self,
-            beneficiary: H160,
+            beneficiary: Address,
             amount: Balance,
             description: Vec<u8>,
         ) -> Result<(), Error> {
