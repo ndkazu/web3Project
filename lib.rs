@@ -6,7 +6,7 @@ mod dao {
     use governance::{GovernanceRef, ProposalType};
     use ink::codegen::TraitCallBuilder;
     use my_erc20::MyErc20Ref;
-    use ink::{prelude::vec::Vec, storage::Mapping};
+    use ink::{prelude::vec::Vec, storage::Mapping, U256};
 
     pub const MINUTES: BlockNumber = 20;
     pub const HOURS: BlockNumber = MINUTES * 60;
@@ -58,7 +58,7 @@ mod dao {
     #[ink::scale_derive(Encode, Decode, TypeInfo)]
     #[cfg_attr(feature = "std", derive(ink::storage::traits::StorageLayout))]
     pub struct Subscription {
-        amount: Option<Balance>,
+        amount: Option< U256>,
         start: BlockNumber,
         end: BlockNumber,
         active: bool,
@@ -110,7 +110,7 @@ mod dao {
                     .parse()
                     .expect("Invalid ERC20 code hash");
             let governance_code_hash =
-                "0xbc1d9c85110c29aa56d88131627c17f92456cf8fcf7b439f3854a359d49c122a"
+                "0x22d01ab811ce50dca28edd3fccda9e079c0536df5d273790e84c43356493cf52"
                     .parse()
                     .expect("Invalid Governance code hash");
             let erc20_contract = MyErc20Ref::new(supply)
@@ -155,7 +155,7 @@ mod dao {
             match user.subscription.subscription_type {
                 SubscriptionType::Free => {}
                 SubscriptionType::Basic | SubscriptionType::Premium | SubscriptionType::Other => {
-                    let amount = user.subscription.amount.unwrap_or(0);
+                    let amount = user.subscription.amount.unwrap_or(U256::from(0)); // Example amount for Basic
                     // Transfer the amount from the caller to the DAO account
                     let _transfer_result = call_builder
                         .transfer(dao_account, amount.into())
@@ -181,7 +181,7 @@ mod dao {
                 SubscriptionType::Free => {
                     // Update to basic
                     member.subscription.subscription_type = SubscriptionType::Basic;
-                    let amount = subscription_amount(SubscriptionType::Basic).unwrap_or(0); // Example amount for Basic
+                    let amount = subscription_amount(SubscriptionType::Basic).unwrap_or(U256::from(0)); // Example amount for Basic
                     member.subscription.amount = Some(amount.into());
                     member.subscription.start = self.env().block_number();
                     member.subscription.end = member.subscription.start.saturating_add(DAYS * 30); // Example: 30 days subscription
@@ -198,7 +198,7 @@ mod dao {
                         .invoke();
                 }
                 SubscriptionType::Basic => {
-                    let amount = subscription_amount(request.clone()).unwrap_or(0); // Example amount for Basic
+                    let amount = subscription_amount(request.clone()).unwrap_or(U256::from(0)); // Example amount for Basic
                     match request {
                         SubscriptionType::Premium => {
                             member.subscription.subscription_type = request;
@@ -238,7 +238,7 @@ mod dao {
         pub fn request_spending(
             &mut self,
             beneficiary: Address,
-            amount: Balance,
+            amount:  U256,
             description: Vec<u8>,
         ) -> Result<(), Error> {
             let caller = self.env().caller();
@@ -275,7 +275,7 @@ mod dao {
                             description,
                             ProposalType::NewMentor,
                             Some(caller),
-                            0, // Placeholder for proposal parameters
+                            U256::from(0), // Placeholder for proposal parameters
                         )
                         .ref_time_limit(1000000)
                         .proof_size_limit(1000000)
@@ -290,7 +290,7 @@ mod dao {
                             description,
                             ProposalType::NewMentor,
                             Some(caller),
-                            0, // Placeholder for proposal parameters
+                            U256::from(0), // Placeholder for proposal parameters
                         )
                         .ref_time_limit(1000000)
                         .proof_size_limit(1000000)
@@ -378,12 +378,12 @@ mod dao {
         ProposalNotFound,
     }
 
-    pub fn subscription_amount(subscription: SubscriptionType) -> Option<Balance> {
+    pub fn subscription_amount(subscription: SubscriptionType) -> Option< U256> {
         match subscription {
             SubscriptionType::Free => None,
-            SubscriptionType::Basic => Some(1000), // Example amount for Basic
-            SubscriptionType::Premium => Some(5000), // Example amount for Premium
-            SubscriptionType::Other => Some(10000), // Example amount for Other
+            SubscriptionType::Basic => Some(U256::from(1000)), // Example amount for Basic
+            SubscriptionType::Premium => Some(U256::from(5000)), // Example amount for Premium
+            SubscriptionType::Other => Some(U256::from(10000)), // Example amount for Other
         }
     }
     /// Unit tests in Rust are normally defined within such a `#[cfg(test)]`

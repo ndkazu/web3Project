@@ -7,7 +7,7 @@ pub use self::governance::{
 
 #[ink::contract]
 mod governance {
-use ink::{ prelude::vec::Vec, storage::Mapping};
+use ink::{ prelude::vec::Vec, storage::Mapping, U256};
 
     #[derive(Debug, Clone, PartialEq)]
 	#[ink::scale_derive(Encode, Decode, TypeInfo)]
@@ -45,7 +45,7 @@ use ink::{ prelude::vec::Vec, storage::Mapping};
 		// The recipient of the proposal
 		pub beneficiary: Address,
 		// Amount of tokens to be awarded to the beneficiary
-		pub amount: Balance,
+		pub amount: U256,
 	}	
 
     #[derive(Debug, Clone)]
@@ -55,7 +55,7 @@ use ink::{ prelude::vec::Vec, storage::Mapping};
 		// The recipient of the proposal
 		pub beneficiary: Address,
 		// Amount of tokens to be awarded to the beneficiary
-		pub amount: Balance,
+		pub amount: U256,
 	}	
 
     #[derive(Debug, Clone)]
@@ -68,11 +68,11 @@ use ink::{ prelude::vec::Vec, storage::Mapping};
 		// End of the voting period for this proposal
 		pub end: BlockNumber,
 
-		// Balance representing the total votes for this proposal
-		pub yes_votes: Balance,
+		// U256 representing the total votes for this proposal
+		pub yes_votes: U256,
 
-		// Balance representing the total votes against this proposal
-		pub no_votes: Balance,
+		// U256 representing the total votes against this proposal
+		pub no_votes: U256,
 	}
 
     /// Defines an event that is emitted every time a voter voted.  
@@ -130,8 +130,8 @@ use ink::{ prelude::vec::Vec, storage::Mapping};
 	#[ink::scale_derive(Encode, Decode, TypeInfo)]
 	#[cfg_attr(feature = "std", derive(ink::storage::traits::StorageLayout))]
 	pub struct Voter {
-		// Stores the voter's voting influence by using his balance
-		pub voting_power: Balance,
+		// Stores the voter's voting influence by using his U256
+		pub voting_power: U256,
 
 		// Keeps track of the last vote casted by the voter
 		pub last_vote: BlockNumber,
@@ -178,7 +178,7 @@ use ink::{ prelude::vec::Vec, storage::Mapping};
             description: Vec<u8>,
             proposal_type: ProposalType,
             beneficiary: Option<Address>,
-            amount: Balance,
+            amount: U256,
         ) -> u32 {
             let proposal_id = self.proposal_count;
             let transaction = match proposal_type {
