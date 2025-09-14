@@ -5,7 +5,7 @@ authors = ["[your_name] <[your_email]>"]
 edition = "2021"
 
 [dependencies]
-ink = { git = "https://github.com/use-ink/ink", branch = "master", version = "6.0.0-alpha.1", default-features = false, features = ["unstable-hostfn"] }
+ink = { git = "https://github.com/use-ink/ink", branch = "master", version = "6.0.0-alpha.3", default-features = false, features = ["unstable-hostfn"] }
 scale = { package = "parity-scale-codec", version = "3", default-features = false, features = ["derive"] }
 scale-info = { version = "2.6", default-features = false, features = ["derive"], optional = true }
 
@@ -13,13 +13,14 @@ scale-info = { version = "2.6", default-features = false, features = ["derive"],
 #
 # If we don't we will end up with linking errors!
 governance = { path = "other_contracts/governance", default-features = false, features = ["ink-as-dependency"] }
+hex-literal = "1.0.0"
 my_erc20 = { path = "other_contracts/my_erc20", default-features = false, features = ["ink-as-dependency"] }
 pallet-revive-uapi = { version = "0.4.0", default-features = false, features = ["unstable-hostfn"] }
 
-
 [dev-dependencies]
 env_logger = { version = "0.11.3" }
-ink_e2e = { git = "https://github.com/use-ink/ink", branch = "master", version = "6.0.0-alpha.1" }
+hex = { version = "0.4.3" }
+ink_e2e = { git = "https://github.com/use-ink/ink", branch = "master", version = "6.0.0-alpha.3" }
 serde_json = "1.0.114"
 
 [lib]

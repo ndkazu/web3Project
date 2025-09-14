@@ -6,7 +6,7 @@ mod dao {
     use governance::{GovernanceRef, ProposalType};
     use ink::codegen::TraitCallBuilder;
     use my_erc20::MyErc20Ref;
-    use ink::{prelude::vec::Vec, storage::Mapping, U256};
+    use ink::{prelude::vec::Vec, storage::Mapping, U256, H256};
 
     pub const MINUTES: BlockNumber = 20;
     pub const HOURS: BlockNumber = MINUTES * 60;
@@ -105,14 +105,8 @@ mod dao {
         /// Constructor that initializes the `bool` value to the given `init_value`.
         #[ink(constructor)]
         pub fn new(supply: ink::U256) -> Self {
-            let erc20code_hash =
-                "0xeb7993da2ac929125f35c16111f2e882f1c2321009f09c0b9f4831099388a1c0"
-                    .parse()
-                    .expect("Invalid ERC20 code hash");
-            let governance_code_hash =
-                "0x7b0775b05686fde9e4ec8b4638d382548bcd64fb2ddb12059fdf7f9875f423bc"
-                    .parse()
-                    .expect("Invalid Governance code hash");
+            let erc20code_hash =  H256::from_slice(&hex_literal::hex!("54afa2486a67ccfd5b14c8522f566ed3938e358fb8fb2102cf60970b9b66e91c"));
+            let governance_code_hash =  H256::from_slice(&hex_literal::hex!("9324ad9bff50302988c767cc49fe0a43d2c9feb2ff09092c6033a1a68a5dd87a"));
             let erc20_contract = MyErc20Ref::new(supply)
                 .code_hash(erc20code_hash)
                 .endowment(0.into())
