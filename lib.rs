@@ -105,8 +105,8 @@ mod dao {
         /// Constructor that initializes the `bool` value to the given `init_value`.
         #[ink(constructor)]
         pub fn new(supply: ink::U256) -> Self {
-            let erc20code_hash =  H256::from_slice(&hex_literal::hex!("54afa2486a67ccfd5b14c8522f566ed3938e358fb8fb2102cf60970b9b66e91c"));
-            let governance_code_hash =  H256::from_slice(&hex_literal::hex!("9324ad9bff50302988c767cc49fe0a43d2c9feb2ff09092c6033a1a68a5dd87a"));
+            let erc20code_hash =  H256::from_slice(&hex_literal::hex!("4bb109780fea77776d25967a12d6e39d0de18ff56b4da37fe469bef0eeae3ea9"));
+            let governance_code_hash =  H256::from_slice(&hex_literal::hex!("5b6682ec75d4a4cceb9c6152f3dee6b26b7dacbe213a1fd89f7676b327d39703"));
             let erc20_contract = MyErc20Ref::new(supply)
                 .code_hash(erc20code_hash)
                 .endowment(0.into())
