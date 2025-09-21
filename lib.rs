@@ -58,7 +58,7 @@ mod dao {
     #[ink::scale_derive(Encode, Decode, TypeInfo)]
     #[cfg_attr(feature = "std", derive(ink::storage::traits::StorageLayout))]
     pub struct Subscription {
-        amount: Option< U256>,
+        amount: U256,
         start: BlockNumber,
         end: BlockNumber,
         active: bool,
@@ -105,8 +105,8 @@ mod dao {
         /// Constructor that initializes the `bool` value to the given `init_value`.
         #[ink(constructor)]
         pub fn new(supply: ink::U256) -> Self {
-            let erc20code_hash =  H256::from_slice(&hex_literal::hex!("4bb109780fea77776d25967a12d6e39d0de18ff56b4da37fe469bef0eeae3ea9"));
-            let governance_code_hash =  H256::from_slice(&hex_literal::hex!("5b6682ec75d4a4cceb9c6152f3dee6b26b7dacbe213a1fd89f7676b327d39703"));
+            let erc20code_hash =  H256::from_slice(&hex_literal::hex!("f7c05c1f6c2cce28928ba8e1b24d5f9f26f8369078aeed165ae25274d73d8eac"));
+            let governance_code_hash =  H256::from_slice(&hex_literal::hex!("bf4f9cf05555537d4ae9515b91dbca32efd37eb47c5a09662ed76fb7c4155530"));
             let erc20_contract = MyErc20Ref::new(supply)
                 .code_hash(erc20code_hash)
                 .endowment(0.into())
@@ -130,12 +130,21 @@ mod dao {
         pub fn new_subscription(
             &mut self,
             name: Vec<u8>,
-            subscription: Subscription,
+            subscription_type: SubscriptionType,
             institutional: bool,
             school: bool,
         ) -> Result<(), Error> {
             let caller = self.env().caller();
-
+            // Get current block number
+            let current_block = self.env().block_number();
+            let amount = subscription_amount(subscription_type.clone());
+            let subscription = Subscription {
+                amount,
+                start: current_block,
+                end: current_block.saturating_add(DAYS * 30), // Example: 30 days subscription
+                active: true,
+                subscription_type,
+            };
             let dao_account = self.env().address();
             let call_builder = self.erc20.call_mut();
 
@@ -149,7 +158,7 @@ mod dao {
             match user.subscription.subscription_type {
                 SubscriptionType::Free => {}
                 SubscriptionType::Basic | SubscriptionType::Premium | SubscriptionType::Other => {
-                    let amount = user.subscription.amount.unwrap_or(U256::from(0)); // Example amount for Basic
+                    let amount = user.subscription.amount; // Example amount for Basic
                     // Transfer the amount from the caller to the DAO account
                     let _transfer_result = call_builder
                         .transfer(dao_account, amount.into())
@@ -175,8 +184,8 @@ mod dao {
                 SubscriptionType::Free => {
                     // Update to basic
                     member.subscription.subscription_type = SubscriptionType::Basic;
-                    let amount = subscription_amount(SubscriptionType::Basic).unwrap_or(U256::from(0)); // Example amount for Basic
-                    member.subscription.amount = Some(amount.into());
+                    let amount = subscription_amount(SubscriptionType::Basic); // Example amount for Basic
+                    member.subscription.amount = amount;
                     member.subscription.start = self.env().block_number();
                     member.subscription.end = member.subscription.start.saturating_add(DAYS * 30); // Example: 30 days subscription
                     self.members.insert(caller, &member);
@@ -192,18 +201,18 @@ mod dao {
                         .invoke();
                 }
                 SubscriptionType::Basic => {
-                    let amount = subscription_amount(request.clone()).unwrap_or(U256::from(0)); // Example amount for Basic
+                    let amount = subscription_amount(request.clone()); // Example amount for Basic
                     match request {
                         SubscriptionType::Premium => {
                             member.subscription.subscription_type = request;
-                            member.subscription.amount = Some(amount.into());
+                            member.subscription.amount = amount;
                             member.subscription.start = self.env().block_number();
                             member.subscription.end =
                                 member.subscription.start.saturating_add(DAYS * 30);
                         }
                         SubscriptionType::Other => {
                             member.subscription.subscription_type = request;
-                            member.subscription.amount = Some(amount.into());
+                            member.subscription.amount = amount;
                             member.subscription.start = self.env().block_number();
                             member.subscription.end =
                                 member.subscription.start.saturating_add(DAYS * 30);
@@ -372,12 +381,12 @@ mod dao {
         ProposalNotFound,
     }
 
-    pub fn subscription_amount(subscription: SubscriptionType) -> Option< U256> {
+    pub fn subscription_amount(subscription: SubscriptionType) -> U256 {
         match subscription {
-            SubscriptionType::Free => None,
-            SubscriptionType::Basic => Some(U256::from(1000)), // Example amount for Basic
-            SubscriptionType::Premium => Some(U256::from(5000)), // Example amount for Premium
-            SubscriptionType::Other => Some(U256::from(10000)), // Example amount for Other
+            SubscriptionType::Free => U256::from(0),
+            SubscriptionType::Basic => U256::from(1000), // Example amount for Basic
+            SubscriptionType::Premium => U256::from(5000), // Example amount for Premium
+            SubscriptionType::Other => U256::from(10000), // Example amount for Other
         }
     }
     /// Unit tests in Rust are normally defined within such a `#[cfg(test)]`
