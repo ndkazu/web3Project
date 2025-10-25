@@ -1,6 +1,6 @@
 {
   "source": {
-    "hash": "0xf507971a13e3a79d05410ebc267360f0353f8a078f85588847a359d7e727b0c0",
+    "hash": "0x7788fa424ec461f5074f3e929e965b77262380d0046a225c4add2303b94d2f03",
     "language": "ink! 6.0.0-alpha.4",
     "compiler": "rustc 1.90.0",
     "build_info": {
@@ -10,10 +10,10 @@
     }
   },
   "contract": {
-    "name": "my_edh",
-    "version": "6.0.0-alpha.4",
+    "name": "governance",
+    "version": "0.1.0",
     "authors": [
-      "Use Ink <ink@use.ink>"
+      "[your_name] <[your_email]>"
     ]
   },
   "image": null,
@@ -22,11 +22,10 @@
       {
         "args": [
           {
-            "label": "supply",
+            "label": "voting_period",
             "type": {
               "displayName": [
-                "ink",
-                "U256"
+                "BlockNumber"
               ],
               "type": 2
             }
@@ -43,7 +42,7 @@
             "ink_primitives",
             "ConstructorResult"
           ],
-          "type": 18
+          "type": 26
         },
         "selector": "0x9bae9d5e"
       }
@@ -54,25 +53,25 @@
         "displayName": [
           "AccountId"
         ],
-        "type": 29
+        "type": 37
       },
       "balance": {
         "displayName": [
           "Balance"
         ],
-        "type": 31
+        "type": 39
       },
       "blockNumber": {
         "displayName": [
           "BlockNumber"
         ],
-        "type": 5
+        "type": 2
       },
       "hash": {
         "displayName": [
           "Hash"
         ],
-        "type": 32
+        "type": 40
       },
       "nativeToEthRatio": 100000000,
       "staticBufferSize": 16384,
@@ -80,7 +79,7 @@
         "displayName": [
           "Timestamp"
         ],
-        "type": 4
+        "type": 5
       }
     },
     "events": [
@@ -94,7 +93,7 @@
               "displayName": [
                 "Option"
               ],
-              "type": 27
+              "type": 28
             }
           },
           {
@@ -105,7 +104,7 @@
               "displayName": [
                 "Option"
               ],
-              "type": 28
+              "type": 36
             }
           }
         ],
@@ -115,126 +114,6 @@
         "label": "Vote",
         "module_path": "governance::governance",
         "signature_topic": "0x394a6cd12e2d9d38f410db6c6465bf0d4d641bbc50767c1142dd40da540bbee2"
-      },
-      {
-        "args": [
-          {
-            "docs": [],
-            "indexed": false,
-            "label": "who",
-            "type": {
-              "displayName": [
-                "Option"
-              ],
-              "type": 27
-            }
-          },
-          {
-            "docs": [],
-            "indexed": false,
-            "label": "when",
-            "type": {
-              "displayName": [
-                "Option"
-              ],
-              "type": 28
-            }
-          }
-        ],
-        "docs": [
-          "Defines an event that is emitted",
-          "every time a subscription is created."
-        ],
-        "label": "SubscriptionCreated",
-        "module_path": "my_edh::dao",
-        "signature_topic": "0x7fa658c223e424a0e46e7254cb9be89ade2b1b6347ace625376da3a2d7377854"
-      },
-      {
-        "args": [
-          {
-            "docs": [],
-            "indexed": true,
-            "label": "from",
-            "type": {
-              "displayName": [
-                "Option"
-              ],
-              "type": 27
-            }
-          },
-          {
-            "docs": [],
-            "indexed": true,
-            "label": "to",
-            "type": {
-              "displayName": [
-                "Option"
-              ],
-              "type": 27
-            }
-          },
-          {
-            "docs": [],
-            "indexed": false,
-            "label": "value",
-            "type": {
-              "displayName": [
-                "U256"
-              ],
-              "type": 2
-            }
-          }
-        ],
-        "docs": [
-          "Event emitted when a token transfer occurs."
-        ],
-        "label": "Transfer",
-        "module_path": "my_erc20::my_erc20",
-        "signature_topic": "0x2bf04b1fcc64de43ce9704e9ccdc0657018c43d01c3e88bceed23cba23a10f5c"
-      },
-      {
-        "args": [
-          {
-            "docs": [],
-            "indexed": true,
-            "label": "owner",
-            "type": {
-              "displayName": [
-                "Address"
-              ],
-              "type": 8
-            }
-          },
-          {
-            "docs": [],
-            "indexed": true,
-            "label": "spender",
-            "type": {
-              "displayName": [
-                "Address"
-              ],
-              "type": 8
-            }
-          },
-          {
-            "docs": [],
-            "indexed": false,
-            "label": "value",
-            "type": {
-              "displayName": [
-                "U256"
-              ],
-              "type": 2
-            }
-          }
-        ],
-        "docs": [
-          "Event emitted when an approval occurs that `spender` is allowed to withdraw",
-          "up to the amount of `value` tokens from `owner`."
-        ],
-        "label": "Approval",
-        "module_path": "my_erc20::my_erc20",
-        "signature_topic": "0xa1d96b3a6e369c8b0ee68c99cb4406104190a21b35f7ef8fa2bcef30a78efc1a"
       }
     ],
     "lang_error": {
@@ -242,13 +121,13 @@
         "ink",
         "LangError"
       ],
-      "type": 19
+      "type": 27
     },
     "messages": [
       {
         "args": [
           {
-            "label": "name",
+            "label": "description",
             "type": {
               "displayName": [
                 "Vec"
@@ -257,86 +136,21 @@
             }
           },
           {
-            "label": "subscription_type",
+            "label": "proposal_type",
             "type": {
               "displayName": [
-                "SubscriptionType"
+                "ProposalType"
               ],
-              "type": 12
+              "type": 11
             }
           },
-          {
-            "label": "institutional",
-            "type": {
-              "displayName": [
-                "bool"
-              ],
-              "type": 6
-            }
-          },
-          {
-            "label": "school",
-            "type": {
-              "displayName": [
-                "bool"
-              ],
-              "type": 6
-            }
-          }
-        ],
-        "default": false,
-        "docs": [
-          " This message creates a new user's Subscription"
-        ],
-        "label": "new_subscription",
-        "mutates": true,
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
-          "type": 20
-        },
-        "selector": "0x03648c2f"
-      },
-      {
-        "args": [
-          {
-            "label": "request",
-            "type": {
-              "displayName": [
-                "SubscriptionType"
-              ],
-              "type": 12
-            }
-          }
-        ],
-        "default": false,
-        "docs": [
-          " This message updates a user's Subscription"
-        ],
-        "label": "update_subscription",
-        "mutates": true,
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
-          "type": 20
-        },
-        "selector": "0xfa16811a"
-      },
-      {
-        "args": [
           {
             "label": "beneficiary",
             "type": {
               "displayName": [
-                "Address"
+                "Option"
               ],
-              "type": 8
+              "type": 28
             }
           },
           {
@@ -345,24 +159,17 @@
               "displayName": [
                 "U256"
               ],
-              "type": 2
-            }
-          },
-          {
-            "label": "description",
-            "type": {
-              "displayName": [
-                "Vec"
-              ],
-              "type": 0
+              "type": 3
             }
           }
         ],
         "default": false,
         "docs": [
-          " Request a spending proposal"
+          " A message that can be called on instantiated contracts.",
+          " This one flips the value of the stored `bool` from `true`",
+          " to `false` and vice versa."
         ],
-        "label": "request_spending",
+        "label": "create_proposal",
         "mutates": true,
         "payable": false,
         "returnType": {
@@ -370,46 +177,9 @@
             "ink",
             "MessageResult"
           ],
-          "type": 20
+          "type": 29
         },
-        "selector": "0x25f41a0b"
-      },
-      {
-        "args": [
-          {
-            "label": "role",
-            "type": {
-              "displayName": [
-                "Roles"
-              ],
-              "type": 23
-            }
-          },
-          {
-            "label": "description",
-            "type": {
-              "displayName": [
-                "Vec"
-              ],
-              "type": 0
-            }
-          }
-        ],
-        "default": false,
-        "docs": [
-          " Request a particular role"
-        ],
-        "label": "request_role",
-        "mutates": true,
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
-          "type": 20
-        },
-        "selector": "0xb94d1081"
+        "selector": "0xf9fb13d3"
       },
       {
         "args": [
@@ -419,15 +189,22 @@
               "displayName": [
                 "u32"
               ],
-              "type": 5
+              "type": 2
+            }
+          },
+          {
+            "label": "approve",
+            "type": {
+              "displayName": [
+                "bool"
+              ],
+              "type": 30
             }
           }
         ],
         "default": false,
-        "docs": [
-          " Execute a proposal"
-        ],
-        "label": "execute_proposal",
+        "docs": [],
+        "label": "vote",
         "mutates": true,
         "payable": false,
         "returnType": {
@@ -435,102 +212,70 @@
             "ink",
             "MessageResult"
           ],
-          "type": 20
+          "type": 31
         },
-        "selector": "0xde5bbbbc"
+        "selector": "0x083be260"
       },
       {
         "args": [
           {
-            "label": "account",
+            "label": "proposal_id",
             "type": {
               "displayName": [
-                "Address"
+                "u32"
               ],
-              "type": 8
+              "type": 2
+            }
+          },
+          {
+            "label": "executed",
+            "type": {
+              "displayName": [
+                "bool"
+              ],
+              "type": 30
             }
           }
         ],
         "default": false,
-        "docs": [
-          " Get user information"
-        ],
-        "label": "get_user",
-        "mutates": false,
+        "docs": [],
+        "label": "update_proposal_status",
+        "mutates": true,
         "payable": false,
         "returnType": {
           "displayName": [
             "ink",
             "MessageResult"
           ],
-          "type": 24
+          "type": 31
         },
-        "selector": "0xa4ca534e"
-      },
-      {
-        "args": [],
-        "default": false,
-        "docs": [
-          " Debug method to get the caller's address as seen by the contract"
-        ],
-        "label": "get_caller_address",
-        "mutates": false,
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
-          "type": 26
-        },
-        "selector": "0xe2d96b7f"
-      },
-      {
-        "args": [],
-        "default": false,
-        "docs": [
-          " Debug method to get user by caller (uses env().caller())"
-        ],
-        "label": "get_my_subscription",
-        "mutates": false,
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
-          "type": 24
-        },
-        "selector": "0x7f0c3bc1"
+        "selector": "0x0590f99a"
       },
       {
         "args": [
           {
-            "label": "amount",
+            "label": "proposal_id",
             "type": {
               "displayName": [
-                "U256"
+                "u32"
               ],
               "type": 2
             }
           }
         ],
         "default": false,
-        "docs": [
-          " Helper function to approve the DAO contract to spend caller's tokens",
-          " This allows users to approve token spending in one transaction"
-        ],
-        "label": "approve_dao",
-        "mutates": true,
+        "docs": [],
+        "label": "get_proposal",
+        "mutates": false,
         "payable": false,
         "returnType": {
           "displayName": [
             "ink",
             "MessageResult"
           ],
-          "type": 20
+          "type": 34
         },
-        "selector": "0x6848aeda"
+        "selector": "0xba4dc5ec"
       }
     ]
   },
@@ -547,196 +292,273 @@
                       "fields": [
                         {
                           "layout": {
-                            "leaf": {
-                              "key": "0x3b20cb7f",
-                              "ty": 0
-                            }
-                          },
-                          "name": "name"
-                        },
-                        {
-                          "layout": {
                             "struct": {
                               "fields": [
                                 {
                                   "layout": {
                                     "leaf": {
-                                      "key": "0x3b20cb7f",
-                                      "ty": 2
+                                      "key": "0xdd2013db",
+                                      "ty": 0
                                     }
                                   },
-                                  "name": "amount"
-                                },
-                                {
-                                  "layout": {
-                                    "leaf": {
-                                      "key": "0x3b20cb7f",
-                                      "ty": 5
-                                    }
-                                  },
-                                  "name": "start"
-                                },
-                                {
-                                  "layout": {
-                                    "leaf": {
-                                      "key": "0x3b20cb7f",
-                                      "ty": 5
-                                    }
-                                  },
-                                  "name": "end"
-                                },
-                                {
-                                  "layout": {
-                                    "leaf": {
-                                      "key": "0x3b20cb7f",
-                                      "ty": 6
-                                    }
-                                  },
-                                  "name": "active"
+                                  "name": "description"
                                 },
                                 {
                                   "layout": {
                                     "enum": {
-                                      "dispatchKey": "0x3b20cb7f",
-                                      "name": "SubscriptionType",
+                                      "dispatchKey": "0xdd2013db",
+                                      "name": "ProposalType",
                                       "variants": {
                                         "0": {
                                           "fields": [],
-                                          "name": "Free"
+                                          "name": "Spending"
                                         },
                                         "1": {
                                           "fields": [],
-                                          "name": "Basic"
+                                          "name": "NewCouncilvoter"
                                         },
                                         "2": {
                                           "fields": [],
-                                          "name": "Premium"
-                                        },
-                                        "3": {
-                                          "fields": [],
-                                          "name": "Other"
+                                          "name": "NewMentor"
                                         }
                                       }
                                     }
                                   },
-                                  "name": "subscription_type"
+                                  "name": "proposal_type"
+                                },
+                                {
+                                  "layout": {
+                                    "leaf": {
+                                      "key": "0xdd2013db",
+                                      "ty": 2
+                                    }
+                                  },
+                                  "name": "proposal_id"
                                 }
                               ],
-                              "name": "Subscription"
+                              "name": "BasicInfo"
                             }
                           },
-                          "name": "subscription"
+                          "name": "basic_infos"
+                        },
+                        {
+                          "layout": {
+                            "enum": {
+                              "dispatchKey": "0xdd2013db",
+                              "name": "ProposalStatus",
+                              "variants": {
+                                "0": {
+                                  "fields": [],
+                                  "name": "Submitted"
+                                },
+                                "1": {
+                                  "fields": [],
+                                  "name": "Approved"
+                                },
+                                "2": {
+                                  "fields": [],
+                                  "name": "Rejected"
+                                },
+                                "3": {
+                                  "fields": [],
+                                  "name": "Executed"
+                                }
+                              }
+                            }
+                          },
+                          "name": "status"
+                        },
+                        {
+                          "layout": {
+                            "enum": {
+                              "dispatchKey": "0xdd2013db",
+                              "name": "Option",
+                              "variants": {
+                                "0": {
+                                  "fields": [],
+                                  "name": "None"
+                                },
+                                "1": {
+                                  "fields": [
+                                    {
+                                      "layout": {
+                                        "struct": {
+                                          "fields": [
+                                            {
+                                              "layout": {
+                                                "leaf": {
+                                                  "key": "0xdd2013db",
+                                                  "ty": 2
+                                                }
+                                              },
+                                              "name": "start"
+                                            },
+                                            {
+                                              "layout": {
+                                                "leaf": {
+                                                  "key": "0xdd2013db",
+                                                  "ty": 2
+                                                }
+                                              },
+                                              "name": "end"
+                                            },
+                                            {
+                                              "layout": {
+                                                "leaf": {
+                                                  "key": "0xdd2013db",
+                                                  "ty": 3
+                                                }
+                                              },
+                                              "name": "yes_votes"
+                                            },
+                                            {
+                                              "layout": {
+                                                "leaf": {
+                                                  "key": "0xdd2013db",
+                                                  "ty": 3
+                                                }
+                                              },
+                                              "name": "no_votes"
+                                            }
+                                          ],
+                                          "name": "VoteInfos"
+                                        }
+                                      },
+                                      "name": "0"
+                                    }
+                                  ],
+                                  "name": "Some"
+                                }
+                              }
+                            }
+                          },
+                          "name": "votes"
+                        },
+                        {
+                          "layout": {
+                            "enum": {
+                              "dispatchKey": "0xdd2013db",
+                              "name": "Option",
+                              "variants": {
+                                "0": {
+                                  "fields": [],
+                                  "name": "None"
+                                },
+                                "1": {
+                                  "fields": [
+                                    {
+                                      "layout": {
+                                        "struct": {
+                                          "fields": [
+                                            {
+                                              "layout": {
+                                                "leaf": {
+                                                  "key": "0xdd2013db",
+                                                  "ty": 6
+                                                }
+                                              },
+                                              "name": "beneficiary"
+                                            },
+                                            {
+                                              "layout": {
+                                                "leaf": {
+                                                  "key": "0xdd2013db",
+                                                  "ty": 3
+                                                }
+                                              },
+                                              "name": "amount"
+                                            }
+                                          ],
+                                          "name": "Transaction"
+                                        }
+                                      },
+                                      "name": "0"
+                                    }
+                                  ],
+                                  "name": "Some"
+                                }
+                              }
+                            }
+                          },
+                          "name": "transaction"
                         },
                         {
                           "layout": {
                             "leaf": {
-                              "key": "0x3b20cb7f",
+                              "key": "0xdd2013db",
                               "ty": 6
                             }
                           },
-                          "name": "mentor"
-                        },
-                        {
-                          "layout": {
-                            "leaf": {
-                              "key": "0x3b20cb7f",
-                              "ty": 6
-                            }
-                          },
-                          "name": "council"
-                        },
-                        {
-                          "layout": {
-                            "leaf": {
-                              "key": "0x3b20cb7f",
-                              "ty": 6
-                            }
-                          },
-                          "name": "institutional"
-                        },
-                        {
-                          "layout": {
-                            "leaf": {
-                              "key": "0x3b20cb7f",
-                              "ty": 6
-                            }
-                          },
-                          "name": "school"
+                          "name": "owner"
                         }
                       ],
-                      "name": "User"
+                      "name": "Proposal"
                     }
                   },
-                  "root_key": "0x3b20cb7f",
-                  "ty": 7
+                  "root_key": "0xdd2013db",
+                  "ty": 8
                 }
               },
-              "name": "members"
+              "name": "proposals"
             },
             {
               "layout": {
-                "struct": {
-                  "fields": [
-                    {
-                      "layout": {
-                        "struct": {
-                          "fields": [
-                            {
-                              "layout": {
-                                "leaf": {
-                                  "key": "0x00000000",
-                                  "ty": 8
-                                }
-                              },
-                              "name": "addr"
+                "root": {
+                  "layout": {
+                    "struct": {
+                      "fields": [
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0xbeb86a09",
+                              "ty": 3
                             }
-                          ],
-                          "name": "CallBuilder"
+                          },
+                          "name": "voting_power"
+                        },
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0xbeb86a09",
+                              "ty": 2
+                            }
+                          },
+                          "name": "last_vote"
                         }
-                      },
-                      "name": "inner"
+                      ],
+                      "name": "Voter"
                     }
-                  ],
-                  "name": "MyErc20RefFor"
+                  },
+                  "root_key": "0xbeb86a09",
+                  "ty": 21
                 }
               },
-              "name": "erc20"
+              "name": "voters"
             },
             {
               "layout": {
-                "struct": {
-                  "fields": [
-                    {
-                      "layout": {
-                        "struct": {
-                          "fields": [
-                            {
-                              "layout": {
-                                "leaf": {
-                                  "key": "0x00000000",
-                                  "ty": 8
-                                }
-                              },
-                              "name": "addr"
-                            }
-                          ],
-                          "name": "CallBuilder"
-                        }
-                      },
-                      "name": "inner"
-                    }
-                  ],
-                  "name": "GovernanceRefFor"
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 2
                 }
               },
-              "name": "governance"
+              "name": "voting_period"
+            },
+            {
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 2
+                }
+              },
+              "name": "proposal_count"
             }
           ],
-          "name": "Dao"
+          "name": "Governance"
         }
       },
       "root_key": "0x00000000",
-      "ty": 17
+      "ty": 25
     }
   },
   "types": [
@@ -762,10 +584,18 @@
       "id": 2,
       "type": {
         "def": {
+          "primitive": "u32"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": {
+        "def": {
           "composite": {
             "fields": [
               {
-                "type": 3,
+                "type": 4,
                 "typeName": "[u64; 4]"
               }
             ]
@@ -778,21 +608,13 @@
       }
     },
     {
-      "id": 3,
+      "id": 4,
       "type": {
         "def": {
           "array": {
             "len": 4,
-            "type": 4
+            "type": 5
           }
-        }
-      }
-    },
-    {
-      "id": 4,
-      "type": {
-        "def": {
-          "primitive": "u64"
         }
       }
     },
@@ -800,7 +622,7 @@
       "id": 5,
       "type": {
         "def": {
-          "primitive": "u32"
+          "primitive": "u64"
         }
       }
     },
@@ -808,46 +630,10 @@
       "id": 6,
       "type": {
         "def": {
-          "primitive": "bool"
-        }
-      }
-    },
-    {
-      "id": 7,
-      "type": {
-        "def": {
-          "composite": {}
-        },
-        "params": [
-          {
-            "name": "K",
-            "type": 8
-          },
-          {
-            "name": "V",
-            "type": 10
-          },
-          {
-            "name": "KeyType",
-            "type": 13
-          }
-        ],
-        "path": [
-          "ink_storage",
-          "lazy",
-          "mapping",
-          "Mapping"
-        ]
-      }
-    },
-    {
-      "id": 8,
-      "type": {
-        "def": {
           "composite": {
             "fields": [
               {
-                "type": 9,
+                "type": 7,
                 "typeName": "[u8; 20]"
               }
             ]
@@ -860,7 +646,7 @@
       }
     },
     {
-      "id": 9,
+      "id": 7,
       "type": {
         "def": {
           "array": {
@@ -871,48 +657,102 @@
       }
     },
     {
+      "id": 8,
+      "type": {
+        "def": {
+          "composite": {}
+        },
+        "params": [
+          {
+            "name": "K",
+            "type": 2
+          },
+          {
+            "name": "V",
+            "type": 9
+          },
+          {
+            "name": "KeyType",
+            "type": 17
+          }
+        ],
+        "path": [
+          "ink_storage",
+          "lazy",
+          "mapping",
+          "Mapping"
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "basic_infos",
+                "type": 10,
+                "typeName": "BasicInfo"
+              },
+              {
+                "name": "status",
+                "type": 12,
+                "typeName": "ProposalStatus"
+              },
+              {
+                "name": "votes",
+                "type": 13,
+                "typeName": "Option<VoteInfos>"
+              },
+              {
+                "name": "transaction",
+                "type": 15,
+                "typeName": "Option<Transaction>"
+              },
+              {
+                "name": "owner",
+                "type": 6,
+                "typeName": "Address"
+              }
+            ]
+          }
+        },
+        "path": [
+          "governance",
+          "governance",
+          "Proposal"
+        ]
+      }
+    },
+    {
       "id": 10,
       "type": {
         "def": {
           "composite": {
             "fields": [
               {
-                "name": "name",
+                "name": "description",
                 "type": 0,
                 "typeName": "Vec<u8>"
               },
               {
-                "name": "subscription",
+                "name": "proposal_type",
                 "type": 11,
-                "typeName": "Subscription"
+                "typeName": "ProposalType"
               },
               {
-                "name": "mentor",
-                "type": 6,
-                "typeName": "bool"
-              },
-              {
-                "name": "council",
-                "type": 6,
-                "typeName": "bool"
-              },
-              {
-                "name": "institutional",
-                "type": 6,
-                "typeName": "bool"
-              },
-              {
-                "name": "school",
-                "type": 6,
-                "typeName": "bool"
+                "name": "proposal_id",
+                "type": 2,
+                "typeName": "u32"
               }
             ]
           }
         },
         "path": [
-          "my_edh",
-          "dao",
-          "User"
+          "governance",
+          "governance",
+          "BasicInfo"
         ]
       }
     },
@@ -920,40 +760,27 @@
       "id": 11,
       "type": {
         "def": {
-          "composite": {
-            "fields": [
+          "variant": {
+            "variants": [
               {
-                "name": "amount",
-                "type": 2,
-                "typeName": "U256"
+                "index": 0,
+                "name": "Spending"
               },
               {
-                "name": "start",
-                "type": 5,
-                "typeName": "BlockNumber"
+                "index": 1,
+                "name": "NewCouncilvoter"
               },
               {
-                "name": "end",
-                "type": 5,
-                "typeName": "BlockNumber"
-              },
-              {
-                "name": "active",
-                "type": 6,
-                "typeName": "bool"
-              },
-              {
-                "name": "subscription_type",
-                "type": 12,
-                "typeName": "SubscriptionType"
+                "index": 2,
+                "name": "NewMentor"
               }
             ]
           }
         },
         "path": [
-          "my_edh",
-          "dao",
-          "Subscription"
+          "governance",
+          "governance",
+          "ProposalType"
         ]
       }
     },
@@ -965,27 +792,27 @@
             "variants": [
               {
                 "index": 0,
-                "name": "Free"
+                "name": "Submitted"
               },
               {
                 "index": 1,
-                "name": "Basic"
+                "name": "Approved"
               },
               {
                 "index": 2,
-                "name": "Premium"
+                "name": "Rejected"
               },
               {
                 "index": 3,
-                "name": "Other"
+                "name": "Executed"
               }
             ]
           }
         },
         "path": [
-          "my_edh",
-          "dao",
-          "SubscriptionType"
+          "governance",
+          "governance",
+          "ProposalStatus"
         ]
       }
     },
@@ -993,16 +820,144 @@
       "id": 13,
       "type": {
         "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "None"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 14
+                  }
+                ],
+                "index": 1,
+                "name": "Some"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 14
+          }
+        ],
+        "path": [
+          "Option"
+        ]
+      }
+    },
+    {
+      "id": 14,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "start",
+                "type": 2,
+                "typeName": "BlockNumber"
+              },
+              {
+                "name": "end",
+                "type": 2,
+                "typeName": "BlockNumber"
+              },
+              {
+                "name": "yes_votes",
+                "type": 3,
+                "typeName": "U256"
+              },
+              {
+                "name": "no_votes",
+                "type": 3,
+                "typeName": "U256"
+              }
+            ]
+          }
+        },
+        "path": [
+          "governance",
+          "governance",
+          "VoteInfos"
+        ]
+      }
+    },
+    {
+      "id": 15,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "None"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 16
+                  }
+                ],
+                "index": 1,
+                "name": "Some"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 16
+          }
+        ],
+        "path": [
+          "Option"
+        ]
+      }
+    },
+    {
+      "id": 16,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "beneficiary",
+                "type": 6,
+                "typeName": "Address"
+              },
+              {
+                "name": "amount",
+                "type": 3,
+                "typeName": "U256"
+              }
+            ]
+          }
+        },
+        "path": [
+          "governance",
+          "governance",
+          "Transaction"
+        ]
+      }
+    },
+    {
+      "id": 17,
+      "type": {
+        "def": {
           "composite": {}
         },
         "params": [
           {
             "name": "L",
-            "type": 14
+            "type": 18
           },
           {
             "name": "R",
-            "type": 15
+            "type": 19
           }
         ],
         "path": [
@@ -1013,7 +968,7 @@
       }
     },
     {
-      "id": 14,
+      "id": 18,
       "type": {
         "def": {
           "composite": {}
@@ -1026,7 +981,7 @@
       }
     },
     {
-      "id": 15,
+      "id": 19,
       "type": {
         "def": {
           "composite": {}
@@ -1034,7 +989,7 @@
         "params": [
           {
             "name": "ParentKey",
-            "type": 16
+            "type": 20
           }
         ],
         "path": [
@@ -1045,7 +1000,7 @@
       }
     },
     {
-      "id": 16,
+      "id": 20,
       "type": {
         "def": {
           "tuple": []
@@ -1053,38 +1008,139 @@
       }
     },
     {
-      "id": 17,
+      "id": 21,
+      "type": {
+        "def": {
+          "composite": {}
+        },
+        "params": [
+          {
+            "name": "K",
+            "type": 6
+          },
+          {
+            "name": "V",
+            "type": 22
+          },
+          {
+            "name": "KeyType",
+            "type": 23
+          }
+        ],
+        "path": [
+          "ink_storage",
+          "lazy",
+          "mapping",
+          "Mapping"
+        ]
+      }
+    },
+    {
+      "id": 22,
       "type": {
         "def": {
           "composite": {
             "fields": [
               {
-                "name": "members",
-                "type": 7,
-                "typeName": "<Mapping<Address, User> as::ink::storage::traits::AutoStorableHint\n<::ink::storage::traits::ManualKey<2144018491u32, ()>,>>::Type"
+                "name": "voting_power",
+                "type": 3,
+                "typeName": "U256"
               },
               {
-                "name": "erc20",
-                "type": 8,
-                "typeName": "<MyErc20Ref as::ink::storage::traits::AutoStorableHint<::ink::\nstorage::traits::ManualKey<2041092517u32, ()>,>>::Type"
-              },
-              {
-                "name": "governance",
-                "type": 8,
-                "typeName": "<GovernanceRef as::ink::storage::traits::AutoStorableHint<::ink::\nstorage::traits::ManualKey<435987988u32, ()>,>>::Type"
+                "name": "last_vote",
+                "type": 2,
+                "typeName": "BlockNumber"
               }
             ]
           }
         },
         "path": [
-          "my_edh",
-          "dao",
-          "Dao"
+          "governance",
+          "governance",
+          "Voter"
         ]
       }
     },
     {
-      "id": 18,
+      "id": 23,
+      "type": {
+        "def": {
+          "composite": {}
+        },
+        "params": [
+          {
+            "name": "L",
+            "type": 18
+          },
+          {
+            "name": "R",
+            "type": 24
+          }
+        ],
+        "path": [
+          "ink_storage_traits",
+          "impls",
+          "ResolverKey"
+        ]
+      }
+    },
+    {
+      "id": 24,
+      "type": {
+        "def": {
+          "composite": {}
+        },
+        "params": [
+          {
+            "name": "ParentKey",
+            "type": 20
+          }
+        ],
+        "path": [
+          "ink_storage_traits",
+          "impls",
+          "ManualKey"
+        ]
+      }
+    },
+    {
+      "id": 25,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "proposals",
+                "type": 8,
+                "typeName": "<Mapping<u32, Proposal> as::ink::storage::traits::AutoStorableHint\n<::ink::storage::traits::ManualKey<3675463901u32, ()>,>>::Type"
+              },
+              {
+                "name": "voters",
+                "type": 21,
+                "typeName": "<Mapping<Address, Voter> as::ink::storage::traits::\nAutoStorableHint<::ink::storage::traits::ManualKey<157989054u32, ()\n>,>>::Type"
+              },
+              {
+                "name": "voting_period",
+                "type": 2,
+                "typeName": "<BlockNumber as::ink::storage::traits::AutoStorableHint<::ink::\nstorage::traits::ManualKey<400112670u32, ()>,>>::Type"
+              },
+              {
+                "name": "proposal_count",
+                "type": 2,
+                "typeName": "<u32 as::ink::storage::traits::AutoStorableHint<::ink::storage\n::traits::ManualKey<1135972421u32, ()>,>>::Type"
+              }
+            ]
+          }
+        },
+        "path": [
+          "governance",
+          "governance",
+          "Governance"
+        ]
+      }
+    },
+    {
+      "id": 26,
       "type": {
         "def": {
           "variant": {
@@ -1092,7 +1148,7 @@
               {
                 "fields": [
                   {
-                    "type": 16
+                    "type": 20
                   }
                 ],
                 "index": 0,
@@ -1101,7 +1157,7 @@
               {
                 "fields": [
                   {
-                    "type": 19
+                    "type": 27
                   }
                 ],
                 "index": 1,
@@ -1113,11 +1169,11 @@
         "params": [
           {
             "name": "T",
-            "type": 16
+            "type": 20
           },
           {
             "name": "E",
-            "type": 19
+            "type": 27
           }
         ],
         "path": [
@@ -1126,7 +1182,7 @@
       }
     },
     {
-      "id": 19,
+      "id": 27,
       "type": {
         "def": {
           "variant": {
@@ -1145,316 +1201,6 @@
       }
     },
     {
-      "id": 20,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "fields": [
-                  {
-                    "type": 21
-                  }
-                ],
-                "index": 0,
-                "name": "Ok"
-              },
-              {
-                "fields": [
-                  {
-                    "type": 19
-                  }
-                ],
-                "index": 1,
-                "name": "Err"
-              }
-            ]
-          }
-        },
-        "params": [
-          {
-            "name": "T",
-            "type": 21
-          },
-          {
-            "name": "E",
-            "type": 19
-          }
-        ],
-        "path": [
-          "Result"
-        ]
-      }
-    },
-    {
-      "id": 21,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "fields": [
-                  {
-                    "type": 16
-                  }
-                ],
-                "index": 0,
-                "name": "Ok"
-              },
-              {
-                "fields": [
-                  {
-                    "type": 22
-                  }
-                ],
-                "index": 1,
-                "name": "Err"
-              }
-            ]
-          }
-        },
-        "params": [
-          {
-            "name": "T",
-            "type": 16
-          },
-          {
-            "name": "E",
-            "type": 22
-          }
-        ],
-        "path": [
-          "Result"
-        ]
-      }
-    },
-    {
-      "id": 22,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "index": 0,
-                "name": "SubscriptionAlreadyExists"
-              },
-              {
-                "index": 1,
-                "name": "UserNotFound"
-              },
-              {
-                "index": 2,
-                "name": "InsufficientFunds"
-              },
-              {
-                "index": 3,
-                "name": "CanUpgradeOnly"
-              },
-              {
-                "index": 4,
-                "name": "InvalidSubscriptionAmount"
-              },
-              {
-                "index": 5,
-                "name": "InvalidSubscription"
-              },
-              {
-                "index": 6,
-                "name": "NotPremiumUser"
-              },
-              {
-                "index": 7,
-                "name": "NotAnAuthorisedUser"
-              },
-              {
-                "index": 8,
-                "name": "ProposalNotFound"
-              }
-            ]
-          }
-        },
-        "path": [
-          "my_edh",
-          "dao",
-          "Error"
-        ]
-      }
-    },
-    {
-      "id": 23,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "index": 0,
-                "name": "Mentor"
-              },
-              {
-                "index": 1,
-                "name": "Council"
-              }
-            ]
-          }
-        },
-        "path": [
-          "my_edh",
-          "dao",
-          "Roles"
-        ]
-      }
-    },
-    {
-      "id": 24,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "fields": [
-                  {
-                    "type": 25
-                  }
-                ],
-                "index": 0,
-                "name": "Ok"
-              },
-              {
-                "fields": [
-                  {
-                    "type": 19
-                  }
-                ],
-                "index": 1,
-                "name": "Err"
-              }
-            ]
-          }
-        },
-        "params": [
-          {
-            "name": "T",
-            "type": 25
-          },
-          {
-            "name": "E",
-            "type": 19
-          }
-        ],
-        "path": [
-          "Result"
-        ]
-      }
-    },
-    {
-      "id": 25,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "index": 0,
-                "name": "None"
-              },
-              {
-                "fields": [
-                  {
-                    "type": 10
-                  }
-                ],
-                "index": 1,
-                "name": "Some"
-              }
-            ]
-          }
-        },
-        "params": [
-          {
-            "name": "T",
-            "type": 10
-          }
-        ],
-        "path": [
-          "Option"
-        ]
-      }
-    },
-    {
-      "id": 26,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "fields": [
-                  {
-                    "type": 8
-                  }
-                ],
-                "index": 0,
-                "name": "Ok"
-              },
-              {
-                "fields": [
-                  {
-                    "type": 19
-                  }
-                ],
-                "index": 1,
-                "name": "Err"
-              }
-            ]
-          }
-        },
-        "params": [
-          {
-            "name": "T",
-            "type": 8
-          },
-          {
-            "name": "E",
-            "type": 19
-          }
-        ],
-        "path": [
-          "Result"
-        ]
-      }
-    },
-    {
-      "id": 27,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "index": 0,
-                "name": "None"
-              },
-              {
-                "fields": [
-                  {
-                    "type": 8
-                  }
-                ],
-                "index": 1,
-                "name": "Some"
-              }
-            ]
-          }
-        },
-        "params": [
-          {
-            "name": "T",
-            "type": 8
-          }
-        ],
-        "path": [
-          "Option"
-        ]
-      }
-    },
-    {
       "id": 28,
       "type": {
         "def": {
@@ -1467,7 +1213,7 @@
               {
                 "fields": [
                   {
-                    "type": 5
+                    "type": 6
                   }
                 ],
                 "index": 1,
@@ -1479,7 +1225,7 @@
         "params": [
           {
             "name": "T",
-            "type": 5
+            "type": 6
           }
         ],
         "path": [
@@ -1491,10 +1237,309 @@
       "id": 29,
       "type": {
         "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 2
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 27
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 2
+          },
+          {
+            "name": "E",
+            "type": 27
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 30,
+      "type": {
+        "def": {
+          "primitive": "bool"
+        }
+      }
+    },
+    {
+      "id": 31,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 32
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 27
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 32
+          },
+          {
+            "name": "E",
+            "type": 27
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 32,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 20
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 33
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 20
+          },
+          {
+            "name": "E",
+            "type": 33
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 33,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "ProposalNotFound"
+              },
+              {
+                "index": 1,
+                "name": "ProblemWithTheContract"
+              },
+              {
+                "index": 2,
+                "name": "VotingPeriodEnded"
+              },
+              {
+                "index": 3,
+                "name": "AlreadyVoted"
+              },
+              {
+                "index": 4,
+                "name": "VoterNotFound"
+              },
+              {
+                "index": 5,
+                "name": "VotingPeriodNotEnded"
+              },
+              {
+                "index": 6,
+                "name": "ProposalExecuted"
+              },
+              {
+                "index": 7,
+                "name": "ProposalRejected"
+              }
+            ]
+          }
+        },
+        "path": [
+          "governance",
+          "governance",
+          "Error"
+        ]
+      }
+    },
+    {
+      "id": 34,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 35
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 27
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 35
+          },
+          {
+            "name": "E",
+            "type": 27
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 35,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 9
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 33
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 9
+          },
+          {
+            "name": "E",
+            "type": 33
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 36,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "None"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 2
+                  }
+                ],
+                "index": 1,
+                "name": "Some"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 2
+          }
+        ],
+        "path": [
+          "Option"
+        ]
+      }
+    },
+    {
+      "id": 37,
+      "type": {
+        "def": {
           "composite": {
             "fields": [
               {
-                "type": 30,
+                "type": 38,
                 "typeName": "[u8; 32]"
               }
             ]
@@ -1508,7 +1553,7 @@
       }
     },
     {
-      "id": 30,
+      "id": 38,
       "type": {
         "def": {
           "array": {
@@ -1519,7 +1564,7 @@
       }
     },
     {
-      "id": 31,
+      "id": 39,
       "type": {
         "def": {
           "primitive": "u128"
@@ -1527,13 +1572,13 @@
       }
     },
     {
-      "id": 32,
+      "id": 40,
       "type": {
         "def": {
           "composite": {
             "fields": [
               {
-                "type": 30,
+                "type": 38,
                 "typeName": "[u8; 32]"
               }
             ]

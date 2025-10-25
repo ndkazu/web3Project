@@ -14,21 +14,18 @@ export function Home() {
     <div className="relative min-h-screen overflow-hidden">
       {/* Hero Section with Parallax Effect */}
       <div
-        className="relative min-h-screen flex items-center justify-center"
+        className="relative min-h-screen"
         style={{
-          backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)), url(https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=2832&auto=format&fit=crop)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
+          background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)',
           transform: `translateY(${scrollY * 0.5}px)`,
         }}
       >
         {/* Top Navigation for Home Page Only */}
-        <div className="absolute top-0 left-0 right-0 z-50">
+        <div className="absolute top-0 left-0 right-0 z-50 px-4">
           {/* Logo at top center */}
-          <div className="text-center py-8">
+          <div className="text-center pt-6 pb-4 md:pt-8 md:pb-6">
             <h1
-              className="text-3xl font-black tracking-wider"
+              className="text-base sm:text-lg md:text-xl lg:text-2xl font-black tracking-wider"
               style={{
                 fontFamily: 'var(--font-heading)',
                 color: 'var(--color-edh-white)',
@@ -39,63 +36,65 @@ export function Home() {
             </h1>
           </div>
 
-          {/* Top right icons */}
-          <div className="absolute top-8 right-8 flex items-center gap-6">
+          {/* Top right icons - hidden on very small screens */}
+          <div className="hidden sm:flex absolute top-4 md:top-8 right-4 md:right-8 items-center gap-3 md:gap-6">
             <button className="hover:opacity-70 transition-all">
-              <svg className="w-6 h-6" fill="none" stroke="white" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="white" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </button>
             <button className="hover:opacity-70 transition-all">
-              <svg className="w-6 h-6" fill="none" stroke="white" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="white" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
             </button>
             <button className="hover:opacity-70 transition-all">
-              <svg className="w-6 h-6" fill="none" stroke="white" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="white" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
               </svg>
             </button>
           </div>
         </div>
 
-        {/* Overlay Content */}
-        <div className="relative z-10 text-center px-8 max-w-4xl mx-auto animate-fade-in-up">
-          <p
-            className="text-xl md:text-3xl font-light mb-8 tracking-widest uppercase leading-relaxed"
-            style={{
-              fontFamily: 'var(--font-heading)',
-              color: 'var(--color-edh-white)',
-              letterSpacing: '0.15em'
-            }}
-          >
-            POUR CEUX QUI MARCHENT SEULS<br />
-            VENEZ AVANCER À NOS CÔTÉS
-          </p>
+        {/* Overlay Content - Centered Vertically */}
+        <div className="flex items-center justify-center min-h-screen pt-32 pb-24 sm:pt-24 sm:pb-24">
+          <div className="relative z-10 text-center px-4 md:px-8 max-w-4xl mx-auto animate-fade-in-up">
+            <p
+              className="text-sm sm:text-base md:text-xl lg:text-2xl font-light mb-6 md:mb-8 tracking-wider uppercase leading-relaxed"
+              style={{
+                fontFamily: 'var(--font-heading)',
+                color: 'var(--color-edh-white)',
+                letterSpacing: '0.08em'
+              }}
+            >
+              POUR CEUX QUI MARCHENT SEULS<br />
+              VENEZ AVANCER À NOS CÔTÉS
+            </p>
 
-          <Link
-            to="/membership"
-            className="inline-block px-12 py-4 font-medium tracking-widest uppercase text-sm border-2 hover:bg-white hover:text-black transition-all"
-            style={{
-              borderColor: 'var(--color-edh-white)',
-              color: 'var(--color-edh-white)',
-              letterSpacing: '0.15em'
-            }}
-          >
-            COMMENCER L'EXPÉRIENCE
-          </Link>
+            <Link
+              to="/membership"
+              className="inline-block px-6 md:px-12 py-3 md:py-4 font-medium tracking-wider uppercase text-xs md:text-sm border-2 hover:bg-white hover:text-black transition-all"
+              style={{
+                borderColor: 'var(--color-edh-white)',
+                color: 'var(--color-edh-white)',
+                letterSpacing: '0.1em'
+              }}
+            >
+              COMMENCER L'EXPÉRIENCE
+            </Link>
+          </div>
         </div>
 
         {/* Scroll Indicator */}
         <div
-          className="absolute bottom-12 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer"
+          className="absolute bottom-8 md:bottom-12 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer"
           onClick={() => window.scrollBy({ top: window.innerHeight, behavior: 'smooth' })}
         >
           <div
-            className="w-10 h-10 border-2 rounded-full flex items-center justify-center"
+            className="w-8 h-8 md:w-10 md:h-10 border-2 rounded-full flex items-center justify-center"
             style={{ borderColor: 'var(--color-edh-white)' }}
           >
-            <svg className="w-5 h-5" fill="none" stroke="white" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="white" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </div>

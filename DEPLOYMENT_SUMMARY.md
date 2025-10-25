@@ -1,25 +1,26 @@
 # Deployment Summary
 
-**Date**: 2025-10-20
+**Date**: 2025-10-25
 
 ## Deployed Contracts
 
 ### 1. ERC20 Token Contract
-- **Contract Address**: `0x5801b439a678d9d3a68b8019da6a4abfa507de11`
+- **Contract Address**: `0xb5c1704481358b8057507febdb5b8ea1dd0629b5`
 - **Code Hash**: `0x5482c4cd758139eaebf1e0c5413b18ceaf0c54da6e9ae994fa333de2822edd67`
 - **Initial Supply**: 1,000,000,000,000 tokens
-- **Status**: Deployed successfully
+- **Status**: Deployed successfully (instantiated by DAO contract)
 
 ### 2. Governance Contract
-- **Contract Address**: `0x2c6fc00458f198f46ef072e1516b83cd56db7cf5`
+- **Contract Address**: `0xb2ecdfb581808e799e5cf0c6cbd3bc5359f11de0`
 - **Code Hash**: `0x7788fa424ec461f5074f3e929e965b77262380d0046a225c4add2303b94d2f03`
 - **Quorum**: 50
-- **Status**: Deployed successfully
+- **Status**: Deployed successfully (instantiated by DAO contract)
 
 ### 3. Main DAO Contract
-- **Contract Address**: `0x6dc84ddeffccb19ed5285cf3c3d7b03a57a9a4b1`
-- **ERC20 Instance**: Created during deployment
-- **Governance Instance**: Created during deployment
+- **Contract Address**: `0xb2ecdfb581808e799e5cf0c6cbd3bc5359f11de0`
+- **Code Hash**: `0xf507971a13e3a79d05410ebc267360f0353f8a078f85588847a359d7e727b0c0`
+- **ERC20 Instance**: `0xb5c1704481358b8057507febdb5b8ea1dd0629b5`
+- **Governance Instance**: `0xb2ecdfb581808e799e5cf0c6cbd3bc5359f11de0`
 - **Status**: Deployed successfully
 
 ## Frontend Configuration
@@ -64,7 +65,7 @@ You can interact with the deployed contracts using:
 ### Example CLI Call
 ```bash
 cargo contract call \
-  --contract 0x6dc84ddeffccb19ed5285cf3c3d7b03a57a9a4b1 \
+  --contract 0xb2ecdfb581808e799e5cf0c6cbd3bc5359f11de0 \
   --message get_my_subscription \
   --suri //Alice \
   --dry-run

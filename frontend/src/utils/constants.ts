@@ -1,6 +1,7 @@
 // Contract configuration constants
-export const CONTRACT_ADDRESS = '0xf2095f6aa01f329d113c0ef984fc11d1f9932cab'; // DAO contract with fixed gas limits
-export const ERC20_ADDRESS = '0x5801b439a678d9d3a68b8019da6a4abfa507de11'; // ERC20 token contract
+export const CONTRACT_ADDRESS = '0xb2ecdfb581808e799e5cf0c6cbd3bc5359f11de0'; // DAO contract with fixed gas limits
+export const ERC20_ADDRESS = '0xb5c1704481358b8057507febdb5b8ea1dd0629b5'; // ERC20 token contract
+export const GOVERNANCE_ADDRESS = '0xb2ecdfb581808e799e5cf0c6cbd3bc5359f11de0'; // Governance contract
 export const WS_PROVIDER = 'ws://127.0.0.1:9944'; // Local substrate node
 
 // Subscription types
