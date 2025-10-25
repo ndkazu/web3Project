@@ -1,0 +1,31 @@
+[package]
+name = "my_edh"
+version = "6.0.0-alpha.4"
+authors = ["Use Ink <ink@use.ink>"]
+edition = "2024"
+publish = false
+
+[dependencies]
+governance = { path = "other_contracts/governance", default-features = false, features = ["ink-as-dependency"] }
+hex-literal = "1.0.0"
+ink = { git = "https://github.com/use-ink/ink", tag = "v6.0.0-alpha.4", default-features = false }
+my_erc20 = { path = "other_contracts/my_erc20", default-features = false, features = ["ink-as-dependency"] }
+
+[dev-dependencies]
+ink_e2e = { git = "https://github.com/use-ink/ink", tag = "v6.0.0-alpha.4" }
+
+[lib]
+path = "lib.rs"
+
+[features]
+default = ["std"]
+std = [
+	"governance/std",
+	"ink/std",
+	"my_erc20/std",
+]
+ink-as-dependency = []
+e2e-tests = []
+
+[package.metadata.ink-lang]
+abi = "ink"

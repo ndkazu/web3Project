@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-edh-black: #000000;
+  --color-edh-white: #ffffff;
+  --color-edh-beige: #D4C5B0;
+  --color-edh-beige-light: #E8DED0;
+  --color-edh-gray: #666666;
+  --color-edh-gray-light: #F5F5F5;
+
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body: 'Montserrat', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-edh-white);
+  color: var(--color-edh-black);
+  line-height: 1.6;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* EDH Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-edh-gray-light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-edh-beige);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-edh-black);
+}
+
+/* Elegant animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.edh-gradient {
+  background: var(--color-edh-black);
+}
+
+.edh-beige-bg {
+  background: var(--color-edh-beige);
+}
+
+.edh-border {
+  border: 2px solid var(--color-edh-black);
+}
+
+.edh-border-beige {
+  border: 2px solid var(--color-edh-beige);
+}
+
+.edh-shadow {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.edh-shadow-lg {
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
+}

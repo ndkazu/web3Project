@@ -1,0 +1,1551 @@
+{
+  "source": {
+    "hash": "0xf507971a13e3a79d05410ebc267360f0353f8a078f85588847a359d7e727b0c0",
+    "language": "ink! 6.0.0-alpha.4",
+    "compiler": "rustc 1.90.0",
+    "build_info": {
+      "build_mode": "Release",
+      "cargo_contract_version": "6.0.0-alpha.4",
+      "rust_toolchain": "stable-x86_64-unknown-linux-gnu"
+    }
+  },
+  "contract": {
+    "name": "my_edh",
+    "version": "6.0.0-alpha.4",
+    "authors": [
+      "Use Ink <ink@use.ink>"
+    ]
+  },
+  "image": null,
+  "spec": {
+    "constructors": [
+      {
+        "args": [
+          {
+            "label": "supply",
+            "type": {
+              "displayName": [
+                "ink",
+                "U256"
+              ],
+              "type": 2
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          "Constructor that initializes the `bool` value to the given `init_value`."
+        ],
+        "label": "new",
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink_primitives",
+            "ConstructorResult"
+          ],
+          "type": 18
+        },
+        "selector": "0x9bae9d5e"
+      }
+    ],
+    "docs": [],
+    "environment": {
+      "accountId": {
+        "displayName": [
+          "AccountId"
+        ],
+        "type": 29
+      },
+      "balance": {
+        "displayName": [
+          "Balance"
+        ],
+        "type": 31
+      },
+      "blockNumber": {
+        "displayName": [
+          "BlockNumber"
+        ],
+        "type": 5
+      },
+      "hash": {
+        "displayName": [
+          "Hash"
+        ],
+        "type": 32
+      },
+      "nativeToEthRatio": 100000000,
+      "staticBufferSize": 16384,
+      "timestamp": {
+        "displayName": [
+          "Timestamp"
+        ],
+        "type": 4
+      }
+    },
+    "events": [
+      {
+        "args": [
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "who",
+            "type": {
+              "displayName": [
+                "Option"
+              ],
+              "type": 27
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "when",
+            "type": {
+              "displayName": [
+                "Option"
+              ],
+              "type": 28
+            }
+          }
+        ],
+        "docs": [
+          "Defines an event that is emitted every time a voter voted."
+        ],
+        "label": "Vote",
+        "module_path": "governance::governance",
+        "signature_topic": "0x394a6cd12e2d9d38f410db6c6465bf0d4d641bbc50767c1142dd40da540bbee2"
+      },
+      {
+        "args": [
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "who",
+            "type": {
+              "displayName": [
+                "Option"
+              ],
+              "type": 27
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "when",
+            "type": {
+              "displayName": [
+                "Option"
+              ],
+              "type": 28
+            }
+          }
+        ],
+        "docs": [
+          "Defines an event that is emitted",
+          "every time a subscription is created."
+        ],
+        "label": "SubscriptionCreated",
+        "module_path": "my_edh::dao",
+        "signature_topic": "0x7fa658c223e424a0e46e7254cb9be89ade2b1b6347ace625376da3a2d7377854"
+      },
+      {
+        "args": [
+          {
+            "docs": [],
+            "indexed": true,
+            "label": "from",
+            "type": {
+              "displayName": [
+                "Option"
+              ],
+              "type": 27
+            }
+          },
+          {
+            "docs": [],
+            "indexed": true,
+            "label": "to",
+            "type": {
+              "displayName": [
+                "Option"
+              ],
+              "type": 27
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "value",
+            "type": {
+              "displayName": [
+                "U256"
+              ],
+              "type": 2
+            }
+          }
+        ],
+        "docs": [
+          "Event emitted when a token transfer occurs."
+        ],
+        "label": "Transfer",
+        "module_path": "my_erc20::my_erc20",
+        "signature_topic": "0x2bf04b1fcc64de43ce9704e9ccdc0657018c43d01c3e88bceed23cba23a10f5c"
+      },
+      {
+        "args": [
+          {
+            "docs": [],
+            "indexed": true,
+            "label": "owner",
+            "type": {
+              "displayName": [
+                "Address"
+              ],
+              "type": 8
+            }
+          },
+          {
+            "docs": [],
+            "indexed": true,
+            "label": "spender",
+            "type": {
+              "displayName": [
+                "Address"
+              ],
+              "type": 8
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "value",
+            "type": {
+              "displayName": [
+                "U256"
+              ],
+              "type": 2
+            }
+          }
+        ],
+        "docs": [
+          "Event emitted when an approval occurs that `spender` is allowed to withdraw",
+          "up to the amount of `value` tokens from `owner`."
+        ],
+        "label": "Approval",
+        "module_path": "my_erc20::my_erc20",
+        "signature_topic": "0xa1d96b3a6e369c8b0ee68c99cb4406104190a21b35f7ef8fa2bcef30a78efc1a"
+      }
+    ],
+    "lang_error": {
+      "displayName": [
+        "ink",
+        "LangError"
+      ],
+      "type": 19
+    },
+    "messages": [
+      {
+        "args": [
+          {
+            "label": "name",
+            "type": {
+              "displayName": [
+                "Vec"
+              ],
+              "type": 0
+            }
+          },
+          {
+            "label": "subscription_type",
+            "type": {
+              "displayName": [
+                "SubscriptionType"
+              ],
+              "type": 12
+            }
+          },
+          {
+            "label": "institutional",
+            "type": {
+              "displayName": [
+                "bool"
+              ],
+              "type": 6
+            }
+          },
+          {
+            "label": "school",
+            "type": {
+              "displayName": [
+                "bool"
+              ],
+              "type": 6
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " This message creates a new user's Subscription"
+        ],
+        "label": "new_subscription",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 20
+        },
+        "selector": "0x03648c2f"
+      },
+      {
+        "args": [
+          {
+            "label": "request",
+            "type": {
+              "displayName": [
+                "SubscriptionType"
+              ],
+              "type": 12
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " This message updates a user's Subscription"
+        ],
+        "label": "update_subscription",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 20
+        },
+        "selector": "0xfa16811a"
+      },
+      {
+        "args": [
+          {
+            "label": "beneficiary",
+            "type": {
+              "displayName": [
+                "Address"
+              ],
+              "type": 8
+            }
+          },
+          {
+            "label": "amount",
+            "type": {
+              "displayName": [
+                "U256"
+              ],
+              "type": 2
+            }
+          },
+          {
+            "label": "description",
+            "type": {
+              "displayName": [
+                "Vec"
+              ],
+              "type": 0
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Request a spending proposal"
+        ],
+        "label": "request_spending",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 20
+        },
+        "selector": "0x25f41a0b"
+      },
+      {
+        "args": [
+          {
+            "label": "role",
+            "type": {
+              "displayName": [
+                "Roles"
+              ],
+              "type": 23
+            }
+          },
+          {
+            "label": "description",
+            "type": {
+              "displayName": [
+                "Vec"
+              ],
+              "type": 0
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Request a particular role"
+        ],
+        "label": "request_role",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 20
+        },
+        "selector": "0xb94d1081"
+      },
+      {
+        "args": [
+          {
+            "label": "proposal_id",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 5
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Execute a proposal"
+        ],
+        "label": "execute_proposal",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 20
+        },
+        "selector": "0xde5bbbbc"
+      },
+      {
+        "args": [
+          {
+            "label": "account",
+            "type": {
+              "displayName": [
+                "Address"
+              ],
+              "type": 8
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Get user information"
+        ],
+        "label": "get_user",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 24
+        },
+        "selector": "0xa4ca534e"
+      },
+      {
+        "args": [],
+        "default": false,
+        "docs": [
+          " Debug method to get the caller's address as seen by the contract"
+        ],
+        "label": "get_caller_address",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 26
+        },
+        "selector": "0xe2d96b7f"
+      },
+      {
+        "args": [],
+        "default": false,
+        "docs": [
+          " Debug method to get user by caller (uses env().caller())"
+        ],
+        "label": "get_my_subscription",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 24
+        },
+        "selector": "0x7f0c3bc1"
+      },
+      {
+        "args": [
+          {
+            "label": "amount",
+            "type": {
+              "displayName": [
+                "U256"
+              ],
+              "type": 2
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Helper function to approve the DAO contract to spend caller's tokens",
+          " This allows users to approve token spending in one transaction"
+        ],
+        "label": "approve_dao",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 20
+        },
+        "selector": "0x6848aeda"
+      }
+    ]
+  },
+  "storage": {
+    "root": {
+      "layout": {
+        "struct": {
+          "fields": [
+            {
+              "layout": {
+                "root": {
+                  "layout": {
+                    "struct": {
+                      "fields": [
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0x3b20cb7f",
+                              "ty": 0
+                            }
+                          },
+                          "name": "name"
+                        },
+                        {
+                          "layout": {
+                            "struct": {
+                              "fields": [
+                                {
+                                  "layout": {
+                                    "leaf": {
+                                      "key": "0x3b20cb7f",
+                                      "ty": 2
+                                    }
+                                  },
+                                  "name": "amount"
+                                },
+                                {
+                                  "layout": {
+                                    "leaf": {
+                                      "key": "0x3b20cb7f",
+                                      "ty": 5
+                                    }
+                                  },
+                                  "name": "start"
+                                },
+                                {
+                                  "layout": {
+                                    "leaf": {
+                                      "key": "0x3b20cb7f",
+                                      "ty": 5
+                                    }
+                                  },
+                                  "name": "end"
+                                },
+                                {
+                                  "layout": {
+                                    "leaf": {
+                                      "key": "0x3b20cb7f",
+                                      "ty": 6
+                                    }
+                                  },
+                                  "name": "active"
+                                },
+                                {
+                                  "layout": {
+                                    "enum": {
+                                      "dispatchKey": "0x3b20cb7f",
+                                      "name": "SubscriptionType",
+                                      "variants": {
+                                        "0": {
+                                          "fields": [],
+                                          "name": "Free"
+                                        },
+                                        "1": {
+                                          "fields": [],
+                                          "name": "Basic"
+                                        },
+                                        "2": {
+                                          "fields": [],
+                                          "name": "Premium"
+                                        },
+                                        "3": {
+                                          "fields": [],
+                                          "name": "Other"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "name": "subscription_type"
+                                }
+                              ],
+                              "name": "Subscription"
+                            }
+                          },
+                          "name": "subscription"
+                        },
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0x3b20cb7f",
+                              "ty": 6
+                            }
+                          },
+                          "name": "mentor"
+                        },
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0x3b20cb7f",
+                              "ty": 6
+                            }
+                          },
+                          "name": "council"
+                        },
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0x3b20cb7f",
+                              "ty": 6
+                            }
+                          },
+                          "name": "institutional"
+                        },
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0x3b20cb7f",
+                              "ty": 6
+                            }
+                          },
+                          "name": "school"
+                        }
+                      ],
+                      "name": "User"
+                    }
+                  },
+                  "root_key": "0x3b20cb7f",
+                  "ty": 7
+                }
+              },
+              "name": "members"
+            },
+            {
+              "layout": {
+                "struct": {
+                  "fields": [
+                    {
+                      "layout": {
+                        "struct": {
+                          "fields": [
+                            {
+                              "layout": {
+                                "leaf": {
+                                  "key": "0x00000000",
+                                  "ty": 8
+                                }
+                              },
+                              "name": "addr"
+                            }
+                          ],
+                          "name": "CallBuilder"
+                        }
+                      },
+                      "name": "inner"
+                    }
+                  ],
+                  "name": "MyErc20RefFor"
+                }
+              },
+              "name": "erc20"
+            },
+            {
+              "layout": {
+                "struct": {
+                  "fields": [
+                    {
+                      "layout": {
+                        "struct": {
+                          "fields": [
+                            {
+                              "layout": {
+                                "leaf": {
+                                  "key": "0x00000000",
+                                  "ty": 8
+                                }
+                              },
+                              "name": "addr"
+                            }
+                          ],
+                          "name": "CallBuilder"
+                        }
+                      },
+                      "name": "inner"
+                    }
+                  ],
+                  "name": "GovernanceRefFor"
+                }
+              },
+              "name": "governance"
+            }
+          ],
+          "name": "Dao"
+        }
+      },
+      "root_key": "0x00000000",
+      "ty": 17
+    }
+  },
+  "types": [
+    {
+      "id": 0,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 1
+          }
+        }
+      }
+    },
+    {
+      "id": 1,
+      "type": {
+        "def": {
+          "primitive": "u8"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "type": 3,
+                "typeName": "[u64; 4]"
+              }
+            ]
+          }
+        },
+        "path": [
+          "primitive_types",
+          "U256"
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "type": {
+        "def": {
+          "array": {
+            "len": 4,
+            "type": 4
+          }
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": {
+        "def": {
+          "primitive": "u64"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": {
+        "def": {
+          "primitive": "u32"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": {
+        "def": {
+          "primitive": "bool"
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": {
+        "def": {
+          "composite": {}
+        },
+        "params": [
+          {
+            "name": "K",
+            "type": 8
+          },
+          {
+            "name": "V",
+            "type": 10
+          },
+          {
+            "name": "KeyType",
+            "type": 13
+          }
+        ],
+        "path": [
+          "ink_storage",
+          "lazy",
+          "mapping",
+          "Mapping"
+        ]
+      }
+    },
+    {
+      "id": 8,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "type": 9,
+                "typeName": "[u8; 20]"
+              }
+            ]
+          }
+        },
+        "path": [
+          "primitive_types",
+          "H160"
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "type": {
+        "def": {
+          "array": {
+            "len": 20,
+            "type": 1
+          }
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "name",
+                "type": 0,
+                "typeName": "Vec<u8>"
+              },
+              {
+                "name": "subscription",
+                "type": 11,
+                "typeName": "Subscription"
+              },
+              {
+                "name": "mentor",
+                "type": 6,
+                "typeName": "bool"
+              },
+              {
+                "name": "council",
+                "type": 6,
+                "typeName": "bool"
+              },
+              {
+                "name": "institutional",
+                "type": 6,
+                "typeName": "bool"
+              },
+              {
+                "name": "school",
+                "type": 6,
+                "typeName": "bool"
+              }
+            ]
+          }
+        },
+        "path": [
+          "my_edh",
+          "dao",
+          "User"
+        ]
+      }
+    },
+    {
+      "id": 11,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "amount",
+                "type": 2,
+                "typeName": "U256"
+              },
+              {
+                "name": "start",
+                "type": 5,
+                "typeName": "BlockNumber"
+              },
+              {
+                "name": "end",
+                "type": 5,
+                "typeName": "BlockNumber"
+              },
+              {
+                "name": "active",
+                "type": 6,
+                "typeName": "bool"
+              },
+              {
+                "name": "subscription_type",
+                "type": 12,
+                "typeName": "SubscriptionType"
+              }
+            ]
+          }
+        },
+        "path": [
+          "my_edh",
+          "dao",
+          "Subscription"
+        ]
+      }
+    },
+    {
+      "id": 12,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "Free"
+              },
+              {
+                "index": 1,
+                "name": "Basic"
+              },
+              {
+                "index": 2,
+                "name": "Premium"
+              },
+              {
+                "index": 3,
+                "name": "Other"
+              }
+            ]
+          }
+        },
+        "path": [
+          "my_edh",
+          "dao",
+          "SubscriptionType"
+        ]
+      }
+    },
+    {
+      "id": 13,
+      "type": {
+        "def": {
+          "composite": {}
+        },
+        "params": [
+          {
+            "name": "L",
+            "type": 14
+          },
+          {
+            "name": "R",
+            "type": 15
+          }
+        ],
+        "path": [
+          "ink_storage_traits",
+          "impls",
+          "ResolverKey"
+        ]
+      }
+    },
+    {
+      "id": 14,
+      "type": {
+        "def": {
+          "composite": {}
+        },
+        "path": [
+          "ink_storage_traits",
+          "impls",
+          "AutoKey"
+        ]
+      }
+    },
+    {
+      "id": 15,
+      "type": {
+        "def": {
+          "composite": {}
+        },
+        "params": [
+          {
+            "name": "ParentKey",
+            "type": 16
+          }
+        ],
+        "path": [
+          "ink_storage_traits",
+          "impls",
+          "ManualKey"
+        ]
+      }
+    },
+    {
+      "id": 16,
+      "type": {
+        "def": {
+          "tuple": []
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "members",
+                "type": 7,
+                "typeName": "<Mapping<Address, User> as::ink::storage::traits::AutoStorableHint\n<::ink::storage::traits::ManualKey<2144018491u32, ()>,>>::Type"
+              },
+              {
+                "name": "erc20",
+                "type": 8,
+                "typeName": "<MyErc20Ref as::ink::storage::traits::AutoStorableHint<::ink::\nstorage::traits::ManualKey<2041092517u32, ()>,>>::Type"
+              },
+              {
+                "name": "governance",
+                "type": 8,
+                "typeName": "<GovernanceRef as::ink::storage::traits::AutoStorableHint<::ink::\nstorage::traits::ManualKey<435987988u32, ()>,>>::Type"
+              }
+            ]
+          }
+        },
+        "path": [
+          "my_edh",
+          "dao",
+          "Dao"
+        ]
+      }
+    },
+    {
+      "id": 18,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 16
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 19
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 16
+          },
+          {
+            "name": "E",
+            "type": 19
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 19,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 1,
+                "name": "CouldNotReadInput"
+              }
+            ]
+          }
+        },
+        "path": [
+          "ink_primitives",
+          "LangError"
+        ]
+      }
+    },
+    {
+      "id": 20,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 21
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 19
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 21
+          },
+          {
+            "name": "E",
+            "type": 19
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 21,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 16
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 22
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 16
+          },
+          {
+            "name": "E",
+            "type": 22
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 22,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "SubscriptionAlreadyExists"
+              },
+              {
+                "index": 1,
+                "name": "UserNotFound"
+              },
+              {
+                "index": 2,
+                "name": "InsufficientFunds"
+              },
+              {
+                "index": 3,
+                "name": "CanUpgradeOnly"
+              },
+              {
+                "index": 4,
+                "name": "InvalidSubscriptionAmount"
+              },
+              {
+                "index": 5,
+                "name": "InvalidSubscription"
+              },
+              {
+                "index": 6,
+                "name": "NotPremiumUser"
+              },
+              {
+                "index": 7,
+                "name": "NotAnAuthorisedUser"
+              },
+              {
+                "index": 8,
+                "name": "ProposalNotFound"
+              }
+            ]
+          }
+        },
+        "path": [
+          "my_edh",
+          "dao",
+          "Error"
+        ]
+      }
+    },
+    {
+      "id": 23,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "Mentor"
+              },
+              {
+                "index": 1,
+                "name": "Council"
+              }
+            ]
+          }
+        },
+        "path": [
+          "my_edh",
+          "dao",
+          "Roles"
+        ]
+      }
+    },
+    {
+      "id": 24,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 25
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 19
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 25
+          },
+          {
+            "name": "E",
+            "type": 19
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 25,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "None"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 10
+                  }
+                ],
+                "index": 1,
+                "name": "Some"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 10
+          }
+        ],
+        "path": [
+          "Option"
+        ]
+      }
+    },
+    {
+      "id": 26,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 8
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 19
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 8
+          },
+          {
+            "name": "E",
+            "type": 19
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 27,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "None"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 8
+                  }
+                ],
+                "index": 1,
+                "name": "Some"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 8
+          }
+        ],
+        "path": [
+          "Option"
+        ]
+      }
+    },
+    {
+      "id": 28,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "None"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 5
+                  }
+                ],
+                "index": 1,
+                "name": "Some"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 5
+          }
+        ],
+        "path": [
+          "Option"
+        ]
+      }
+    },
+    {
+      "id": 29,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "type": 30,
+                "typeName": "[u8; 32]"
+              }
+            ]
+          }
+        },
+        "path": [
+          "ink_primitives",
+          "types",
+          "AccountId"
+        ]
+      }
+    },
+    {
+      "id": 30,
+      "type": {
+        "def": {
+          "array": {
+            "len": 32,
+            "type": 1
+          }
+        }
+      }
+    },
+    {
+      "id": 31,
+      "type": {
+        "def": {
+          "primitive": "u128"
+        }
+      }
+    },
+    {
+      "id": 32,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "type": 30,
+                "typeName": "[u8; 32]"
+              }
+            ]
+          }
+        },
+        "path": [
+          "ink_primitives",
+          "types",
+          "Hash"
+        ]
+      }
+    }
+  ],
+  "version": 6
+}

@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-luxury-black: #1a1a1a;
+  --color-luxury-gold: #c9a961;
+  --color-luxury-gold-dark: #b08d4a;
+  --color-luxury-cream: #f5f2ed;
+  --color-luxury-white: #ffffff;
+  --color-luxury-gray: #4a4a4a;
+  --color-luxury-light-gray: #e8e5e0;
+
+  --font-heading: 'Cormorant Garamond', serif;
+  --font-body: 'Montserrat', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-luxury-cream);
+  color: var(--color-luxury-black);
+  line-height: 1.6;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Luxury Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-luxury-light-gray);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-luxury-gold);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-luxury-gold-dark);
+}
+
+/* Elegant animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.luxury-gradient {
+  background: linear-gradient(135deg, var(--color-luxury-black) 0%, var(--color-luxury-gray) 100%);
+}
+
+.luxury-gold-gradient {
+  background: linear-gradient(135deg, var(--color-luxury-gold) 0%, var(--color-luxury-gold-dark) 100%);
+}
+
+.luxury-border {
+  border: 1px solid var(--color-luxury-gold);
+}
+
+.luxury-shadow {
+  box-shadow: 0 10px 40px rgba(201, 169, 97, 0.15);
+}
+
+.luxury-shadow-lg {
+  box-shadow: 0 20px 60px rgba(201, 169, 97, 0.2);
+}
